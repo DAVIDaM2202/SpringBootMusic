@@ -1,9 +1,11 @@
 package org.udg.pds.springtodo.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
@@ -11,9 +13,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
-@Controller
 @RequestMapping(path="/usuaris")
-public class UsuariController {
+@RestController
+public class UsuariController extends BaseController {
     @Autowired
     UsuariService usuariService;
 
@@ -28,13 +30,22 @@ public class UsuariController {
     }
 
     @PostMapping(path="/login")
-    public String logUser(HttpSession session, @Valid @RequestBody UsuariController.LoginUser usuari){
-        return null;
+    @JsonView(Views.Private.class)
+    public Usuari logUser(HttpSession session, @Valid @RequestBody LoginUser usuari){
+        comprovarNoLogejat(session);
+
+        Usuari u = usuariService.comprovarContrasenya(usuari.nomUsuari, usuari.password);
+        session.setAttribute("simpleapp_auth_id", u.getId());
+        return u;
     }
 
     @PostMapping(path="/logout")
-    public String logOutUser(HttpSession session){
-        return null;
+    @JsonView(Views.Private.class)
+    public String logout(HttpSession session) {
+        obtenirSessioUsuari(session);
+
+        session.removeAttribute("simpleapp_auth_id");
+        return BaseController.OK_MESSAGE;
     }
 
     @PostMapping(path="/register")
@@ -55,7 +66,7 @@ public class UsuariController {
 
     static class LoginUser {
         @NotNull
-        public String username;
+        public String nomUsuari;
         @NotNull
         public String password;
     }

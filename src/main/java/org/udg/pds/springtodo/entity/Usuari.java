@@ -1,11 +1,17 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Set;
 
-@Entity
-public class Usuari {
+@Entity(name = "usuaris")
+public class Usuari implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //Atributs
     @Id
@@ -49,7 +55,7 @@ public class Usuari {
 
     //Getters i setters
 
-
+    @JsonView(Views.Private.class)
     public Long getId() {
         return id;
     }
@@ -58,6 +64,7 @@ public class Usuari {
         this.id = id;
     }
 
+    @JsonView(Views.Public.class)
     public String getNomUsuari() {
         return nomUsuari;
     }
@@ -66,6 +73,7 @@ public class Usuari {
         this.nomUsuari = nomUsuari;
     }
 
+    @JsonView(Views.Private.class)
     public String getEmail() {
         return email;
     }
@@ -74,6 +82,7 @@ public class Usuari {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -82,6 +91,7 @@ public class Usuari {
         this.password = password;
     }
 
+    @JsonIgnore
     public String getDescription() {
         return description;
     }
@@ -90,6 +100,7 @@ public class Usuari {
         this.description = description;
     }
 
+    @JsonIgnore
     public Boolean getNotificarCancons() {
         return notificarCancons;
     }
@@ -98,6 +109,7 @@ public class Usuari {
         this.notificarCancons = notificarCancons;
     }
 
+    @JsonIgnore
     public Artista getJoComArtista() {
         return joComArtista;
     }
@@ -106,6 +118,7 @@ public class Usuari {
         this.joComArtista = joComArtista;
     }
 
+    @JsonIgnore
     public Set<Artista> getFollowing() {
         return following;
     }
