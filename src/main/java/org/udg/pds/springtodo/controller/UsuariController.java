@@ -29,6 +29,14 @@ public class UsuariController extends BaseController {
         return null;
     }
 
+    @GetMapping(path="/check")
+    public String checkLoggedIn(HttpSession session) {
+
+        obtenirSessioUsuari(session);
+
+        return BaseController.OK_MESSAGE;
+    }
+
     @PostMapping(path="/login")
     @JsonView(Views.Private.class)
     public Usuari logUser(HttpSession session, @Valid @RequestBody LoginUser usuari){
