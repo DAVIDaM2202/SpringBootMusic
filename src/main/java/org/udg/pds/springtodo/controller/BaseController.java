@@ -5,14 +5,12 @@ import org.udg.pds.springtodo.controller.exceptions.ControllerException;
 
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by imartin on 21/02/17.
- */
+
 public class BaseController {
 
     static String OK_MESSAGE = "\"ok\"";
 
-    Long getLoggedUser(HttpSession session) {
+    Long obtenirSessioUsuari(HttpSession session) {
 
         if (session == null) {
             throw new ControllerException("No sessions available!");
@@ -26,7 +24,7 @@ public class BaseController {
         return userId;
     }
 
-    void checkNotLoggedIn(HttpSession session) {
+    void comprovarNoLogejat(HttpSession session) {
         // Access to the HTTP session
 
         if (session == null) {

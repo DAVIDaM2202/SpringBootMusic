@@ -7,15 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.udg.pds.springtodo.entity.IdObject;
-import org.udg.pds.springtodo.entity.Tag;
-import org.udg.pds.springtodo.entity.User;
-import org.udg.pds.springtodo.repository.TagRepository;
-import org.udg.pds.springtodo.repository.TaskRepository;
-import org.udg.pds.springtodo.repository.UserRepository;
-import org.udg.pds.springtodo.service.TagService;
-import org.udg.pds.springtodo.service.TaskService;
-import org.udg.pds.springtodo.service.UserService;
+import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
@@ -32,15 +25,7 @@ public class Global {
 
     @Autowired
     private
-    UserService userService;
-
-    @Autowired
-    private
-    TaskService taskService;
-
-    @Autowired
-    private
-    TagService tagService;
+    UsuariService userService;
 
     @Autowired
     private Environment environment;
@@ -91,18 +76,25 @@ public class Global {
         initData();
     }
 
-    private void initData() {
+   private void initData() {
 
         if (activeProfile.equals("dev")) {
             logger.info("Starting populating database ...");
 
-            User user = userService.register("usuari", "usuari@hotmail.com", "123456");
-            IdObject taskId = taskService.addTask("Una tasca", user.getId(), new Date(), new Date());
-            Tag tag = tagService.addTag("ATag", "Just a tag");
-            taskService.addTagsToTask(user.getId(), taskId.getId(), new ArrayList<Long>() {{
-                add(tag.getId());
-            }});
-            userService.register("user", "user@hotmail.com", "0000");
+            Usuari user1 = new Usuari("Gerard","geriloza@gmail.com","1234","El millor",false);
+            Usuari user2 = new Usuari("Nossa","nossa@gmail.com","password","El git developer",false);
+            Usuari user3 = new Usuari("David","divad@gmail.com","muntanya","El frontEnd developer",true);
+            Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
+            Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
+            Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
+
+            userService.guardarUsuari(user1);
+            userService.guardarUsuari(user2);
+            userService.guardarUsuari(user3);
+            userService.guardarUsuari(user4);
+            userService.guardarUsuari(user5);
+            userService.guardarUsuari(user6);
+
         }
 
     }
