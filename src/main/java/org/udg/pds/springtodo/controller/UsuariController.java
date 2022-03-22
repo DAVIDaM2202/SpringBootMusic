@@ -24,11 +24,11 @@ public class UsuariController extends BaseController {
         return null;
     }
     //Ens retorna els camps del usuari
-    @GetMapping("/{id}")
+    @GetMapping("/profile")
     @JsonView(Views.Public.class)
-    public Usuari getUserById(HttpSession session, @PathVariable("id") Long userId){
-        obtenirSessioUsuari(session);
-        return usuariService.getUser(userId);
+    public Usuari getUserById(HttpSession session){
+        Long loggedUserId=obtenirSessioUsuari(session);
+        return usuariService.getUser(loggedUserId);
     }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
