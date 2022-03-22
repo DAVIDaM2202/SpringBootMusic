@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.udg.pds.springtodo.entity.UpdateUser;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.service.UsuariService;
@@ -26,7 +27,7 @@ public class UsuariController extends BaseController {
     //Ens retorna els camps del usuari
     @GetMapping("/profile")
     @JsonView(Views.Public.class)
-    public Usuari getUserById(HttpSession session){
+    public Usuari getUserInformation(HttpSession session){
         Long loggedUserId=obtenirSessioUsuari(session);
         return usuariService.getUser(loggedUserId);
     }
@@ -35,7 +36,7 @@ public class UsuariController extends BaseController {
     private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru)
     {
         Long loggedUserId=obtenirSessioUsuari(session);
-        usuariService.updateProfileUser(ru.username, ru.email,ru.description, loggedUserId);
+        usuariService.updateProfileUser(ru, loggedUserId);
         return BaseController.OK_MESSAGE;
     }
 
@@ -90,15 +91,7 @@ public class UsuariController extends BaseController {
         @NotNull
         public String password;
     }
-   //Es la clase que utilitzarem per editar el perfil del usuari
-    static class UpdateUser {
-        @NotNull
-        public String username;
-        @NotNull
-        public String email;
-        @NotNull
-        public String description;
-    }
+
 
     static class RegisterUser {
         @NotNull

@@ -29,6 +29,10 @@ public class Usuari implements Serializable {
 
     private String description; //pot ser null
 
+
+
+    private String image;
+
     @NotNull
     private Boolean notificarCancons;
 
@@ -125,5 +129,12 @@ public class Usuari implements Serializable {
 
     public void setFollowing(Set<Artista> following) {
         this.following = following;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
