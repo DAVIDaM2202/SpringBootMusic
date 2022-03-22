@@ -73,7 +73,7 @@ public class Usuari implements Serializable {
         this.nomUsuari = nomUsuari;
     }
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public String getEmail() {
         return email;
     }
@@ -91,7 +91,7 @@ public class Usuari implements Serializable {
         this.password = password;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public String getDescription() {
         return description;
     }
@@ -100,7 +100,7 @@ public class Usuari implements Serializable {
         this.description = description;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Boolean getNotificarCancons() {
         return notificarCancons;
     }
@@ -109,7 +109,7 @@ public class Usuari implements Serializable {
         this.notificarCancons = notificarCancons;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Artista getJoComArtista() {
         return joComArtista;
     }
@@ -118,7 +118,7 @@ public class Usuari implements Serializable {
         this.joComArtista = joComArtista;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Set<Artista> getFollowing() {
         return following;
     }

@@ -23,11 +23,23 @@ public class UsuariController extends BaseController {
     public Collection<Usuari> getAllUsers(HttpSession session){
         return null;
     }
-
+    //Ens retorna els camps del usuari
     @GetMapping("/{id}")
+    @JsonView(Views.Public.class)
     public Usuari getUserById(HttpSession session, @PathVariable("id") Long userId){
-        return null;
+        obtenirSessioUsuari(session);
+        return usuariService.getUser(userId);
     }
+    //Actualitzem els camps que ens interesin entre username,email, descripcio
+    @PutMapping(path = "/update")
+    private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru)
+    {
+        Long loggedUserId=obtenirSessioUsuari(session);
+        usuariService.updateProfileUser(ru.username, ru.email,ru.description, loggedUserId);
+        return BaseController.OK_MESSAGE;
+    }
+
+
 
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
@@ -77,6 +89,15 @@ public class UsuariController extends BaseController {
         public String nomUsuari;
         @NotNull
         public String password;
+    }
+   //Es la clase que utilitzarem per editar el perfil del usuari
+    static class UpdateUser {
+        @NotNull
+        public String username;
+        @NotNull
+        public String email;
+        @NotNull
+        public String description;
     }
 
     static class RegisterUser {
