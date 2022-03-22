@@ -7,6 +7,7 @@ import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.repository.UsuariRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuariService {
@@ -28,6 +29,22 @@ public class UsuariService {
             return u;
         else
             throw new ServiceException("La contrasenya no es correcte");
+    }
+    //Ens retorna el usuari a partir del seu id, si no existeix ens retorna que no existeix
+    public Usuari getUser(Long id) {
+        Optional<Usuari> uo = usuariRepository.findById(id);
+        if (uo.isPresent())
+            return uo.get();
+        else
+            throw new ServiceException(String.format("User with id = % dos not exists", id));
+    }
+
+    //Actualitzem els camps que ens interesin entre username,email, descripcio
+    public String updateProfileUser(Usuari user) {
+
+        usuariRepository.save(user);
+
+        return "ok";
     }
 
 }
