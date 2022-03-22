@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.udg.pds.springtodo.entity.UpdateUser;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.service.UsuariService;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Optional;
 
 @RequestMapping(path="/usuaris")
 @RestController
@@ -27,7 +27,7 @@ public class UsuariController extends BaseController {
     //Ens retorna els camps del usuari
     @GetMapping("/profile")
     @JsonView(Views.Public.class)
-    public Usuari getUserInformation(HttpSession session){
+    public Usuari getUserById(HttpSession session){
         Long loggedUserId=obtenirSessioUsuari(session);
         return usuariService.getUser(loggedUserId);
     }
@@ -36,7 +36,13 @@ public class UsuariController extends BaseController {
     private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru)
     {
         Long loggedUserId=obtenirSessioUsuari(session);
-        usuariService.updateProfileUser(ru, loggedUserId);
+        Usuari user = usuariService.getUser(loggedUserId);
+        user.setNomUsuari(ru.username);
+        user.setEmail(ru.email);
+        user.setDescription(ru.description);
+        user.setImage(ru.image);
+        usuariService.updateProfileUser(user);
+
         return BaseController.OK_MESSAGE;
     }
 
@@ -91,7 +97,17 @@ public class UsuariController extends BaseController {
         @NotNull
         public String password;
     }
+   //Es la clase que utilitzarem per editar el perfil del usuari
+    static class UpdateUser {
+        @NotNull
+        public String username;
+        @NotNull
+        public String email;
+        @NotNull
+        public String description;
 
+        public String image;
+    }
 
     static class RegisterUser {
         @NotNull

@@ -2,9 +2,7 @@ package org.udg.pds.springtodo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.udg.pds.springtodo.controller.UsuariController;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
-import org.udg.pds.springtodo.entity.UpdateUser;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.repository.UsuariRepository;
 
@@ -42,15 +40,11 @@ public class UsuariService {
     }
 
     //Actualitzem els camps que ens interesin entre username,email, descripcio
-    public Usuari updateProfileUser(UpdateUser ru, Long loggedUserId) {
-        Optional<Usuari> user = usuariRepository.findById(loggedUserId);
-        user.get().setNomUsuari(ru.getUsername());
-        user.get().setEmail(ru.getEmail());
-        user.get().setDescription(ru.getDescription());
-        user.get().setImage(ru.getImage());
-        final Usuari updatedUser = usuariRepository.save(user.get());
+    public String updateProfileUser(Usuari user) {
 
-        return updatedUser;
+        usuariRepository.save(user);
+
+        return "ok";
     }
 
 }

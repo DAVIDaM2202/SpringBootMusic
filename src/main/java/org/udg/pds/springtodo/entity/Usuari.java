@@ -29,12 +29,11 @@ public class Usuari implements Serializable {
 
     private String description; //pot ser null
 
+    @NotNull
+    private Boolean notificarCancons;
 
 
     private String image;
-
-    @NotNull
-    private Boolean notificarCancons;
 
     //Relacions
 
@@ -130,6 +129,7 @@ public class Usuari implements Serializable {
     public void setFollowing(Set<Artista> following) {
         this.following = following;
     }
+
     public String getImage() {
         return image;
     }
@@ -137,4 +137,5 @@ public class Usuari implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
 }
