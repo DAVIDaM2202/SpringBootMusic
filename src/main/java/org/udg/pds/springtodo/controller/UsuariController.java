@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
+import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,8 @@ import java.util.Optional;
 public class UsuariController extends BaseController {
     @Autowired
     UsuariService usuariService;
+    @Autowired
+    ArtistaService artistaService;
 
     @GetMapping
     public Collection<Usuari> getAllUsers(HttpSession session){
@@ -84,9 +88,15 @@ public class UsuariController extends BaseController {
             if(ru.password.equals(ru.username)){
                 throw new ServiceException("La contrassenya no pot coincidir amb el nom d'usuari");
             }
-            //Guardar usuari
+            //Guardar usuari i artista si fos el cas
             else {
                 Usuari u = new Usuari(ru.username,ru.email,ru.password);
+                usuariService.guardarUsuari(u);
+                if(ru.artist){
+                    Artista a = new Artista(u);
+                    artistaService.guardarArtista(a);
+                    u.setJoComArtista(a);
+                }
                 usuariService.guardarUsuari(u);
                 return "Usuari registrat correctament";
             }

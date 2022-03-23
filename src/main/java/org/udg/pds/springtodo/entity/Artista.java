@@ -3,6 +3,7 @@ package org.udg.pds.springtodo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name="artistes")
@@ -22,16 +23,16 @@ public class Artista {
     private Usuari joComUsuari;
 
     @ManyToMany(mappedBy = "following")
-    Set<Usuari> followers;
+    Set<Usuari> followers=new HashSet<>();
 
 
     //Constructors
 
     public Artista(){}
 
-    public Artista(Boolean notificacionsComentaris,Usuari usuari){
+    public Artista(Usuari usuari){
         this.joComUsuari=usuari;
-        this.notificacionsComentaris=notificacionsComentaris;
+        this.notificacionsComentaris=false;
     }
 
     //Getters i setters
