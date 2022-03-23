@@ -55,6 +55,13 @@ public class Usuari implements Serializable {
         this.description = description;
         this.notificarCancons = notificarCancons;
     }
+    public Usuari(String nomUsuari, String email, String password) {
+        this.nomUsuari = nomUsuari;
+        this.email = email;
+        this.password = password;
+        this.description = "";
+        this.notificarCancons = false;
+    }
 
     //Getters i setters
 
