@@ -47,4 +47,9 @@ public class UsuariService {
         return "ok";
     }
 
+    //Buscar Usuari per correu o username
+    public Boolean noExisteixUsuari(String email, String username){
+        return usuariRepository.buscarPerNomUsuari(username).isEmpty() && usuariRepository.buscarPerCorreu(email).isEmpty();
+    }
+
 }

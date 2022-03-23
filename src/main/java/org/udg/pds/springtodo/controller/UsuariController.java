@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.udg.pds.springtodo.controller.exceptions.ServiceException;
+import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +22,8 @@ import java.util.Optional;
 public class UsuariController extends BaseController {
     @Autowired
     UsuariService usuariService;
+    @Autowired
+    ArtistaService artistaService;
 
     @GetMapping
     public Collection<Usuari> getAllUsers(HttpSession session){
@@ -77,7 +82,29 @@ public class UsuariController extends BaseController {
 
     @PostMapping(path="/register")
     public String registerUser(HttpSession session, @Valid  @RequestBody UsuariController.RegisterUser ru){
-        return null;
+        //confirmar que el correu no existeix i que el username tampoc
+        if(usuariService.noExisteixUsuari(ru.email,ru.username)){
+            //confirmar que la contrassenya no coincideix amb el nom d'usuari
+            if(ru.password.equals(ru.username)){
+                throw new ServiceException("La contrassenya no pot coincidir amb el nom d'usuari");
+            }
+            //Guardar usuari i artista si fos el cas
+            else {
+                Usuari u = new Usuari(ru.username,ru.email,ru.password);
+                usuariService.guardarUsuari(u);
+                if(ru.artist){
+                    Artista a = new Artista(u);
+                    artistaService.guardarArtista(a);
+                    u.setJoComArtista(a);
+                }
+                usuariService.guardarUsuari(u);
+                return "Usuari registrat correctament";
+            }
+        }
+        else{
+            throw new ServiceException("El nom usuari o email ja existeixen");
+        }
+
     }
 
     @PutMapping("/{id}")
@@ -116,5 +143,7 @@ public class UsuariController extends BaseController {
         public String email;
         @NotNull
         public String password;
+        @NotNull
+        public Boolean artist;
     }
 }

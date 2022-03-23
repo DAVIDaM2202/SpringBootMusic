@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "usuaris")
@@ -42,7 +43,7 @@ public class Usuari implements Serializable {
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "usuari_segueix_artista", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
-    Set<Artista> following;
+    Set<Artista> following=new HashSet<>();
 
 
     //Constructors
@@ -54,6 +55,13 @@ public class Usuari implements Serializable {
         this.password = password;
         this.description = description;
         this.notificarCancons = notificarCancons;
+    }
+    public Usuari(String nomUsuari, String email, String password) {
+        this.nomUsuari = nomUsuari;
+        this.email = email;
+        this.password = password;
+        this.description = "";
+        this.notificarCancons = false;
     }
 
     //Getters i setters
