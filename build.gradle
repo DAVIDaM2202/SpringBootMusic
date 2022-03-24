@@ -42,6 +42,8 @@ dependencies {
     implementation 'commons-io:commons-io:2.6'
     implementation 'org.jetbrains:annotations:23.0.0'
     implementation 'junit:junit:4.13.1'
+    //BCrypt dependency
+    implementation 'at.favre.lib:bcrypt:0.9.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'

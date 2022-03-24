@@ -1,6 +1,8 @@
 package org.udg.pds.springtodo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -18,9 +20,11 @@ public class Artista {
 
     //Relacions
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
+
 
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();

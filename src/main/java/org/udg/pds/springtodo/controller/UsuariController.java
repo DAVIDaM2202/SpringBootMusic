@@ -1,8 +1,8 @@
 package org.udg.pds.springtodo.controller;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Artista;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Optional;
 
 @RequestMapping(path="/usuaris")
 @RestController
@@ -81,7 +80,7 @@ public class UsuariController extends BaseController {
     }
 
     @PostMapping(path="/register")
-    public String registerUser(HttpSession session, @Valid  @RequestBody UsuariController.RegisterUser ru){
+    public Usuari registerUser(@Valid  @RequestBody RegisterUser ru){
         //confirmar que el correu no existeix i que el username tampoc
         if(usuariService.noExisteixUsuari(ru.email,ru.username)){
             //confirmar que la contrassenya no coincideix amb el nom d'usuari
@@ -90,7 +89,8 @@ public class UsuariController extends BaseController {
             }
             //Guardar usuari i artista si fos el cas
             else {
-                Usuari u = new Usuari(ru.username,ru.email,ru.password);
+                String encryptedPassword = BCrypt.withDefaults().hashToString(12, ru.password.toCharArray());
+                Usuari u = new Usuari(ru.username,ru.email,encryptedPassword);
                 usuariService.guardarUsuari(u);
                 if(ru.artist){
                     Artista a = new Artista(u);
@@ -98,7 +98,7 @@ public class UsuariController extends BaseController {
                     u.setJoComArtista(a);
                 }
                 usuariService.guardarUsuari(u);
-                return "Usuari registrat correctament";
+                return u;
             }
         }
         else{

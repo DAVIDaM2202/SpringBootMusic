@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo.service;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
@@ -25,10 +26,12 @@ public class UsuariService {
 
         Usuari u = uc.get(0);
 
-        if (u.getPassword().equals(password))
-            return u;
-        else
+        final BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), u.getPassword());
+        if (!result.verified) {
             throw new ServiceException("La contrasenya no es correcte");
+        }
+        else return u;
+
     }
     //Ens retorna el usuari a partir del seu id, si no existeix ens retorna que no existeix
     public Usuari getUser(Long id) {

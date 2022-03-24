@@ -38,6 +38,7 @@ public class Usuari implements Serializable {
 
     //Relacions
 
+    @JsonIgnore
     @OneToOne(mappedBy = "joComUsuari")
     private Artista joComArtista; //pot ser Null
 
