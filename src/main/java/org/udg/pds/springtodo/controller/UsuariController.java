@@ -87,8 +87,7 @@ public class UsuariController extends BaseController {
             }
             //Guardar usuari i artista si fos el cas
             else {
-                String encryptedPassword = BCrypt.withDefaults().hashToString(12, ru.password.toCharArray());
-                Usuari u = new Usuari(ru.username,ru.email,encryptedPassword);
+                Usuari u = new Usuari(ru.username,ru.email,ru.password);
                 usuariService.guardarUsuari(u);
                 if(ru.artist){
                     Artista a = new Artista(u);

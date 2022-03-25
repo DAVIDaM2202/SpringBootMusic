@@ -16,6 +16,7 @@ public class UsuariService {
     UsuariRepository usuariRepository;
 
     public void guardarUsuari(Usuari u){
+        u.setPassword(BCrypt.withDefaults().hashToString(12, u.getPassword().toCharArray()));
         usuariRepository.save(u);
     }
 
