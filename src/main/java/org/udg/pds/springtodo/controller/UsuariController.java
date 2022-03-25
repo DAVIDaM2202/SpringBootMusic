@@ -50,8 +50,6 @@ public class UsuariController extends BaseController {
         return BaseController.OK_MESSAGE;
     }
 
-
-
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
 
@@ -107,9 +105,13 @@ public class UsuariController extends BaseController {
 
     }
 
-    @PutMapping("/{id}")
-    public String updateUser(HttpSession session,@PathVariable("id") Long userId,@RequestBody Usuari u){
-        return null;
+    @PutMapping("/update/password")
+    public Usuari updatePassword(HttpSession session,@RequestBody NewPasswordUser u){
+        Long loggedUserId=obtenirSessioUsuari(session);
+        Usuari user = usuariService.getUser(loggedUserId);
+        user.setPassword(u.password);
+        usuariService.guardarUsuari(user);
+        return user;
     }
 
     @DeleteMapping("/{id}")
@@ -145,5 +147,10 @@ public class UsuariController extends BaseController {
         public String password;
         @NotNull
         public Boolean artist;
+    }
+
+    static class NewPasswordUser {
+        @NotNull
+        public String password;
     }
 }
