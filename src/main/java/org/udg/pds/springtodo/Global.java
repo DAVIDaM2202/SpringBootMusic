@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import io.minio.MinioClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,13 +82,13 @@ public class Global {
         if (activeProfile.equals("dev")) {
             logger.info("Starting populating database ...");
 
-            Usuari user1 = new Usuari("Gerard","geriloza@gmail.com","1234","El millor",false);
-            Usuari user2 = new Usuari("Nossa","nossa@gmail.com","password","El git developer",false);
-            Usuari user3 = new Usuari("David","divad@gmail.com","muntanya","El frontEnd developer",true);
-            Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
-            Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
-            Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
-
+            Usuari user1 = new Usuari("Gerard","geriloza@gmail.com", BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"El millor",false);
+            Usuari user2 = new Usuari("Nossa","nossa@gmail.com",BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"El git developer",false);
+            Usuari user3 = new Usuari("David","divad@gmail.com",BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"El frontEnd developer",true);
+            Usuari user4 = new Usuari("Marc","arnau@gmail.com",BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"El papa",false);
+            Usuari user5 = new Usuari("Carla","davesa@gmail.com",BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"La secretaria",false);
+            Usuari user6 = new Usuari("Bernat","berni@gmail.com",BCrypt.withDefaults().hashToString(12, new char[]{'1', '2', '3', '4'}),"El que treballa a Haribo",false);
+            user3.setImage("https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_1280.png");
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);

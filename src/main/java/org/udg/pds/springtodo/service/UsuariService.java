@@ -55,4 +55,14 @@ public class UsuariService {
         return usuariRepository.buscarPerNomUsuari(username).isEmpty() && usuariRepository.buscarPerCorreu(email).isEmpty();
     }
 
+    public Boolean noExisteixNom(String name){
+        return usuariRepository.buscarPerNomUsuari(name).isEmpty();
+    }
+    public Boolean noExisteixEmail(String email){
+        return usuariRepository.buscarPerCorreu(email).isEmpty();
+    }
+
+
+
+
 }

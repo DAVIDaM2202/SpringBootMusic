@@ -37,18 +37,39 @@ public class UsuariController extends BaseController {
     }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
-    private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru)
-    {
-        Long loggedUserId=obtenirSessioUsuari(session);
-        Usuari user = usuariService.getUser(loggedUserId);
-        user.setNomUsuari(ru.username);
-        user.setEmail(ru.email);
-        user.setDescription(ru.description);
-        user.setImage(ru.image);
-        usuariService.updateProfileUser(user);
+    private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru) {
 
-        return BaseController.OK_MESSAGE;
+        Long loggedUserId = obtenirSessioUsuari(session);
+        Usuari user = usuariService.getUser(loggedUserId);
+        //Si he modificat el email o el username
+        if (!user.getEmail().equals(ru.email) || !user.getNomUsuari().equals(ru.username)) {
+            //Si he modificat el nom usuari mirem si existeix
+            if(!user.getNomUsuari().equals(ru.username)) {
+                if (usuariService.noExisteixNom(ru.username)) {
+                    user.setNomUsuari(ru.username);
+                } else {
+                    throw new ServiceException("El nom usuari o email ja existeixen");
+                }
+            }
+             if(!user.getEmail().equals(ru.email)){
+                if (usuariService.noExisteixEmail(ru.email)){
+                    user.setEmail(ru.email);
+                }else{
+                    throw new ServiceException("El nom usuari o email ja existeixen");
+                }
+            }
+            user.setDescription(ru.description);
+            user.setImage(ru.image);
+            usuariService.updateProfileUser(user);
+            return BaseController.OK_MESSAGE;
+        } else {
+            user.setDescription(ru.description);
+            user.setImage(ru.image);
+            usuariService.updateProfileUser(user);
+            return BaseController.OK_MESSAGE;
+        }
     }
+
 
 
 
