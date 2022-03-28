@@ -37,7 +37,7 @@ public class UsuariController extends BaseController {
     }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
-    private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru) {
+    private Usuari updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru) {
 
         Long loggedUserId = obtenirSessioUsuari(session);
         Usuari user = usuariService.getUser(loggedUserId);
@@ -61,23 +61,18 @@ public class UsuariController extends BaseController {
             user.setDescription(ru.description);
             user.setImage(ru.image);
             usuariService.updateProfileUser(user);
-            return BaseController.OK_MESSAGE;
+            return user;
         } else {
             user.setDescription(ru.description);
             user.setImage(ru.image);
             usuariService.updateProfileUser(user);
-            return BaseController.OK_MESSAGE;
+            return user;
         }
     }
 
-
-
-
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
-
         obtenirSessioUsuari(session);
-
         return BaseController.OK_MESSAGE;
     }
 
