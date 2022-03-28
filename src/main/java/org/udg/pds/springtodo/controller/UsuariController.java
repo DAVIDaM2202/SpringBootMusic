@@ -58,16 +58,11 @@ public class UsuariController extends BaseController {
                     throw new ServiceException("El nom usuari o email ja existeixen");
                 }
             }
-            user.setDescription(ru.description);
-            user.setImage(ru.image);
-            usuariService.updateProfileUser(user);
-            return user;
-        } else {
-            user.setDescription(ru.description);
-            user.setImage(ru.image);
-            usuariService.updateProfileUser(user);
-            return user;
         }
+        user.setDescription(ru.description);
+        user.setImage(ru.image);
+        usuariService.updateProfileUser(user);
+        return user;
     }
 
     @GetMapping(path="/check")
