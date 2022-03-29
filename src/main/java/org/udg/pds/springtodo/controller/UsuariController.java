@@ -37,24 +37,37 @@ public class UsuariController extends BaseController {
     }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
-    private String updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru)
-    {
-        Long loggedUserId=obtenirSessioUsuari(session);
+    private Usuari updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru) {
+
+        Long loggedUserId = obtenirSessioUsuari(session);
         Usuari user = usuariService.getUser(loggedUserId);
-        user.setNomUsuari(ru.username);
-        user.setEmail(ru.email);
+        //Si he modificat el email o el username
+        if (!user.getEmail().equals(ru.email) || !user.getNomUsuari().equals(ru.username)) {
+            //Si he modificat el nom usuari mirem si existeix
+            if(!user.getNomUsuari().equals(ru.username)) {
+                if (usuariService.noExisteixNom(ru.username)) {
+                    user.setNomUsuari(ru.username);
+                } else {
+                    throw new ServiceException("El nom usuari o email ja existeixen");
+                }
+            }
+             if(!user.getEmail().equals(ru.email)){
+                if (usuariService.noExisteixEmail(ru.email)){
+                    user.setEmail(ru.email);
+                }else{
+                    throw new ServiceException("El nom usuari o email ja existeixen");
+                }
+            }
+        }
         user.setDescription(ru.description);
         user.setImage(ru.image);
         usuariService.updateProfileUser(user);
-
-        return BaseController.OK_MESSAGE;
+        return user;
     }
 
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
-
         obtenirSessioUsuari(session);
-
         return BaseController.OK_MESSAGE;
     }
 
@@ -78,7 +91,7 @@ public class UsuariController extends BaseController {
     }
 
     @PostMapping(path="/register")
-    public Usuari registerUser(@Valid  @RequestBody RegisterUser ru){
+    public Usuari registerUser(HttpSession session,@Valid  @RequestBody RegisterUser ru){
         //confirmar que el correu no existeix i que el username tampoc
         if(usuariService.noExisteixUsuari(ru.email,ru.username)){
             //confirmar que la contrassenya no coincideix amb el nom d'usuari
@@ -95,6 +108,7 @@ public class UsuariController extends BaseController {
                     u.setJoComArtista(a);
                 }
                 usuariService.guardarUsuari(u);
+                session.setAttribute("simpleapp_auth_id", u.getId());
                 return u;
             }
         }
