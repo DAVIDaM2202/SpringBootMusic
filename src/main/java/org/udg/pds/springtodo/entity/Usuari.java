@@ -139,6 +139,7 @@ public class Usuari implements Serializable {
         this.following = following;
     }
 
+    @JsonView(Views.Public.class)
     public String getImage() {
         return image;
     }

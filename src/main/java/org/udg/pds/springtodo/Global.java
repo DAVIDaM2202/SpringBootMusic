@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import io.minio.MinioClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +88,6 @@ public class Global {
             Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
             Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
             Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
-
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);
