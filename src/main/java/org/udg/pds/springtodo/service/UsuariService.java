@@ -51,6 +51,19 @@ public class UsuariService {
         return "ok";
     }
 
+    // Obtenir usuari per nom
+    /**
+     * TODO: Arreglar això del get(0 no m'agrada molt en teoria el nomUsuari es únic.
+     * Tampoc té sentit deixar vuit el camp de correu per veure si existeix o no un usuari.
+      */
+    public Usuari obtenirPerNom(String nomUsuari){
+        if(!noExisteixUsuari("", nomUsuari)){
+            return usuariRepository.buscarPerNomUsuari(nomUsuari).get(0);
+        }else{
+            return new Usuari();
+        }
+    }
+
     //Buscar Usuari per correu o username
     public Boolean noExisteixUsuari(String email, String username){
         return usuariRepository.buscarPerNomUsuari(username).isEmpty() && usuariRepository.buscarPerCorreu(email).isEmpty();

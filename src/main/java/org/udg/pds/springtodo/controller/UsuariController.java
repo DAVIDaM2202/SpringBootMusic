@@ -107,9 +107,13 @@ public class UsuariController extends BaseController {
     @PutMapping("/update/password")
     public Usuari updatePassword(HttpSession session,@RequestBody NewPasswordUser u){
         Long loggedUserId=obtenirSessioUsuari(session);
-        Usuari user = usuariService.getUser(loggedUserId);
-        user.setPassword(u.password);
-        usuariService.guardarUsuari(user);
+        Usuari user = usuariService.obtenirPerNom(u.username);
+
+        if(user != null){
+            user.setPassword(u.password);
+            usuariService.guardarUsuari(user);
+        }
+
         return user;
     }
 
@@ -149,6 +153,8 @@ public class UsuariController extends BaseController {
     }
 
     static class NewPasswordUser {
+        @NotNull
+        public String username;
         @NotNull
         public String password;
     }
