@@ -1,6 +1,5 @@
 package org.udg.pds.springtodo.controller;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -119,9 +118,26 @@ public class UsuariController extends BaseController {
     }
 
     @PutMapping("/update/password")
-    public Usuari updatePassword(HttpSession session,@RequestBody NewPasswordUser u){
-        Long loggedUserId=obtenirSessioUsuari(session);
-        Usuari user = usuariService.obtenirPerNom(u.username);
+    public Usuari changePassword(HttpSession httpSession, @RequestBody ChangePasswordUser changePasswordUser){
+        Long loggedUserId = obtenirSessioUsuari(httpSession);
+
+        Usuari usuari = usuariService.getUser(loggedUserId);
+
+        if(usuariService.comprovarContrasenya(usuari.getNomUsuari(),changePasswordUser.oldPassword) != null){
+
+            if(!changePasswordUser.oldPassword.equals(changePasswordUser.password)){
+                usuari.setPassword(changePasswordUser.password);
+                usuariService.guardarUsuari(usuari);
+            }
+
+        }
+
+        return usuari;
+    }
+
+    @PutMapping("/forgot/password")
+    public Usuari forgotPassword(@RequestBody ForgotPasswordUser u){
+        Usuari user = usuariService.obtenirPerCorreuONom(u.email);
 
         if(user != null){
             user.setPassword(u.password);
@@ -166,9 +182,16 @@ public class UsuariController extends BaseController {
         public Boolean artist;
     }
 
-    static class NewPasswordUser {
+    static class ForgotPasswordUser {
         @NotNull
-        public String username;
+        public String email;
+        @NotNull
+        public String password;
+    }
+
+    static class ChangePasswordUser {
+        @NotNull
+        public String oldPassword;
         @NotNull
         public String password;
     }
