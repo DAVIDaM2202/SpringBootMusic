@@ -84,11 +84,10 @@ public class Global {
 
             Usuari user1 = new Usuari("Gerard","geriloza@gmail.com","1234","El millor",false);
             Usuari user2 = new Usuari("Nossa","nossa@gmail.com","password","El git developer",false);
-            Usuari user3 = new Usuari("David","divad@gmail.com",BCrypt.withDefaults().hashToString(12,new char []{'1'}),"El frontEnd developer",true);
+            Usuari user3 = new Usuari("David","divad@gmail.com","muntanya","El frontEnd developer",true);
             Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
             Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
             Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
-            user3.setImage("https://us.123rf.com/450wm/kritchanut/kritchanut1406/kritchanut140600114/29213224-hombre-foto-de-perfil-silueta-avatar.jpg?ver=6");
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);
