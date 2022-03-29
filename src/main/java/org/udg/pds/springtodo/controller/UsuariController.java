@@ -104,7 +104,7 @@ public class UsuariController extends BaseController {
     }
 
     @PostMapping(path="/register")
-    public Usuari registerUser(@Valid  @RequestBody RegisterUser ru){
+    public Usuari registerUser(HttpSession session,@Valid  @RequestBody RegisterUser ru){
         //confirmar que el correu no existeix i que el username tampoc
         if(usuariService.noExisteixUsuari(ru.email,ru.username)){
             //confirmar que la contrassenya no coincideix amb el nom d'usuari
@@ -113,8 +113,7 @@ public class UsuariController extends BaseController {
             }
             //Guardar usuari i artista si fos el cas
             else {
-                String encryptedPassword = BCrypt.withDefaults().hashToString(12, ru.password.toCharArray());
-                Usuari u = new Usuari(ru.username,ru.email,encryptedPassword);
+                Usuari u = new Usuari(ru.username,ru.email,ru.password);
                 usuariService.guardarUsuari(u);
                 if(ru.artist){
                     Artista a = new Artista(u);
@@ -122,6 +121,7 @@ public class UsuariController extends BaseController {
                     u.setJoComArtista(a);
                 }
                 usuariService.guardarUsuari(u);
+                session.setAttribute("simpleapp_auth_id", u.getId());
                 return u;
             }
         }
