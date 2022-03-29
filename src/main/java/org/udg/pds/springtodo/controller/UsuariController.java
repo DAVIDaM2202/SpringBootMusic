@@ -65,6 +65,19 @@ public class UsuariController extends BaseController {
         return user;
     }
 
+    //Actualitzem la contrasenya
+    @PutMapping(path = "/changePassword")
+    private Usuari changePassword(HttpSession session, @Valid  @RequestBody ChangePassword ru) {
+        Long loggedUserId = obtenirSessioUsuari(session);
+        Usuari user = usuariService.getUser(loggedUserId);
+        String encryptedPassword = BCrypt.withDefaults().hashToString(12, ru.newPassword.toCharArray());
+        user.setPassword(encryptedPassword);
+        usuariService.updateProfileUser(user);
+        return user;
+    }
+
+
+
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
         obtenirSessioUsuari(session);
@@ -156,5 +169,9 @@ public class UsuariController extends BaseController {
         public String password;
         @NotNull
         public Boolean artist;
+    }
+    static class ChangePassword{
+        @NotNull
+        public String newPassword;
     }
 }
