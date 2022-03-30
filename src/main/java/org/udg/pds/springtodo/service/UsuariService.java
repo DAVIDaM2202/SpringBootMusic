@@ -51,6 +51,23 @@ public class UsuariService {
         return "ok";
     }
 
+    // Obtenir usuari per nom o correu
+    public Usuari obtenirPerCorreuONom(String correuONom){
+        if(!noExisteixUsuari(correuONom, correuONom)){
+
+            List<Usuari> ul_username = usuariRepository.buscarPerNomUsuari(correuONom);
+            List<Usuari> ul_email = usuariRepository.buscarPerCorreu(correuONom);
+
+            if(!ul_username.isEmpty())
+                return ul_username.get(0);
+
+            if(!ul_email.isEmpty())
+                return ul_email.get(0);
+        }
+
+        return new Usuari();
+    }
+
     //Buscar Usuari per correu o username
     public Boolean noExisteixUsuari(String email, String username){
         return usuariRepository.buscarPerNomUsuari(username).isEmpty() && usuariRepository.buscarPerCorreu(email).isEmpty();
