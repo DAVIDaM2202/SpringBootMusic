@@ -20,17 +20,23 @@ public class UsuariService {
         usuariRepository.save(u);
     }
 
-    public Usuari comprovarContrasenya(String nomUsuari, String password){
-        List<Usuari> uc = usuariRepository.buscarPerNomUsuari(nomUsuari);
+    public Usuari comprovarContrasenya(String identity, String password){
+        List<Usuari> uc = usuariRepository.buscarPerNomUsuari(identity);
 
-        if (uc.size() == 0) throw new ServiceException("L'usuari no existeix");
+        if (uc.size() == 0)
+            uc = usuariRepository.buscarPerCorreu(identity);
+
+        if(uc.size() == 0)
+            throw new ServiceException("L'usuari no existeix");
 
         Usuari u = uc.get(0);
 
         final BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), u.getPassword());
+
         if (!result.verified) {
             throw new ServiceException("La contrasenya no es correcte");
         }
+
         else return u;
 
     }
@@ -44,7 +50,7 @@ public class UsuariService {
     }
 
     //Actualitzem els camps que ens interesin entre username,email, descripcio
-    public String updateProfileUser(Usuari user) {
+    public String updateUser(Usuari user) {
 
         usuariRepository.save(user);
 
