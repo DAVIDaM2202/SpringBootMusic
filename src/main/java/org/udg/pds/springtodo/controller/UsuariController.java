@@ -60,7 +60,7 @@ public class UsuariController extends BaseController {
         }
         user.setDescription(ru.description);
         user.setImage(ru.image);
-        usuariService.updateProfileUser(user);
+        usuariService.updateUser(user);
         return user;
     }
 
@@ -106,7 +106,7 @@ public class UsuariController extends BaseController {
                     artistaService.guardarArtista(a);
                     u.setJoComArtista(a);
                 }
-                usuariService.guardarUsuari(u);
+                usuariService.updateUser(u);
                 session.setAttribute("simpleapp_auth_id", u.getId());
                 return u;
             }
@@ -145,6 +145,16 @@ public class UsuariController extends BaseController {
         }
 
         return user;
+    }
+    @PutMapping("/setNotifications")
+    public Usuari changeNotifications(HttpSession httpSession,@RequestBody UserNotifications u){
+        Long loggedUserId = obtenirSessioUsuari(httpSession);
+
+        Usuari usuari = usuariService.getUser(loggedUserId);
+
+        usuari.setNotificarCancons(u.notifications);
+        usuariService.updateUser(usuari);
+        return usuari;
     }
 
     @DeleteMapping("/{id}")
@@ -194,5 +204,10 @@ public class UsuariController extends BaseController {
         public String oldPassword;
         @NotNull
         public String password;
+    }
+
+    static class UserNotifications{
+        @NotNull
+        public Boolean notifications;
     }
 }
