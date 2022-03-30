@@ -34,6 +34,14 @@ public class UsuariService {
         else return u;
 
     }
+
+    public boolean coicideixenContrasenya(String actualPassword, String oldPassword){
+        final BCrypt.Result result = BCrypt.verifyer().verify(oldPassword.toCharArray(),actualPassword);
+        if (!result.verified) {
+            throw new ServiceException("La contrasenya no es correcte");
+        }
+        return true;
+    }
     //Ens retorna el usuari a partir del seu id, si no existeix ens retorna que no existeix
     public Usuari getUser(Long id) {
         Optional<Usuari> uo = usuariRepository.findById(id);
