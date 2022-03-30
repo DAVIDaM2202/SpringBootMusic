@@ -34,14 +34,6 @@ public class UsuariService {
         else return u;
 
     }
-
-    public boolean coicideixenContrasenya(String actualPassword, String oldPassword){
-        final BCrypt.Result result = BCrypt.verifyer().verify(oldPassword.toCharArray(),actualPassword);
-        if (!result.verified) {
-            throw new ServiceException("La contrasenya no es correcte");
-        }
-        return true;
-    }
     //Ens retorna el usuari a partir del seu id, si no existeix ens retorna que no existeix
     public Usuari getUser(Long id) {
         Optional<Usuari> uo = usuariRepository.findById(id);
@@ -57,6 +49,23 @@ public class UsuariService {
         usuariRepository.save(user);
 
         return "ok";
+    }
+
+    // Obtenir usuari per nom o correu
+    public Usuari obtenirPerCorreuONom(String correuONom){
+        if(!noExisteixUsuari(correuONom, correuONom)){
+
+            List<Usuari> ul_username = usuariRepository.buscarPerNomUsuari(correuONom);
+            List<Usuari> ul_email = usuariRepository.buscarPerCorreu(correuONom);
+
+            if(!ul_username.isEmpty())
+                return ul_username.get(0);
+
+            if(!ul_email.isEmpty())
+                return ul_email.get(0);
+        }
+
+        return new Usuari();
     }
 
     //Buscar Usuari per correu o username

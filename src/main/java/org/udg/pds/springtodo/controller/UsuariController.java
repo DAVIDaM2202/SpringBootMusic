@@ -65,20 +65,6 @@ public class UsuariController extends BaseController {
         return user;
     }
 
-    //Actualitzem la contrasenya
-    @PutMapping(path = "/update/password")
-    private Usuari changePassword(HttpSession session, @Valid  @RequestBody ChangePassword ru) {
-        Long loggedUserId = obtenirSessioUsuari(session);
-        Usuari user = usuariService.getUser(loggedUserId);
-        if(usuariService.coicideixenContrasenya(user.getPassword(),ru.oldPassword)){
-            user.setPassword(ru.newPassword);
-            usuariService.guardarUsuari(user);
-        }
-        return user;
-    }
-
-
-
     @GetMapping(path="/check")
     public String checkLoggedIn(HttpSession session) {
         obtenirSessioUsuari(session);
@@ -132,9 +118,34 @@ public class UsuariController extends BaseController {
 
     }
 
-    @PutMapping("/{id}")
-    public String updateUser(HttpSession session,@PathVariable("id") Long userId,@RequestBody Usuari u){
-        return null;
+    @PutMapping("/update/password")
+    public Usuari changePassword(HttpSession httpSession, @RequestBody ChangePasswordUser changePasswordUser){
+        Long loggedUserId = obtenirSessioUsuari(httpSession);
+
+        Usuari usuari = usuariService.getUser(loggedUserId);
+
+        if(usuariService.comprovarContrasenya(usuari.getNomUsuari(),changePasswordUser.oldPassword) != null){
+
+            if(!changePasswordUser.oldPassword.equals(changePasswordUser.password)){
+                usuari.setPassword(changePasswordUser.password);
+                usuariService.guardarUsuari(usuari);
+            }
+
+        }
+
+        return usuari;
+    }
+
+    @PutMapping("/forgot/password")
+    public Usuari forgotPassword(@RequestBody ForgotPasswordUser u){
+        Usuari user = usuariService.obtenirPerCorreuONom(u.email);
+
+        if(user != null){
+            user.setPassword(u.password);
+            usuariService.guardarUsuari(user);
+        }
+
+        return user;
     }
 
     @DeleteMapping("/{id}")
@@ -171,10 +182,18 @@ public class UsuariController extends BaseController {
         @NotNull
         public Boolean artist;
     }
-    static class ChangePassword{
+
+    static class ForgotPasswordUser {
+        @NotNull
+        public String email;
+        @NotNull
+        public String password;
+    }
+
+    static class ChangePasswordUser {
         @NotNull
         public String oldPassword;
         @NotNull
-        public String newPassword;
+        public String password;
     }
 }
