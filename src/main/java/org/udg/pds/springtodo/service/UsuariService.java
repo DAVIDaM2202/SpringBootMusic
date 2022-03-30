@@ -44,7 +44,7 @@ public class UsuariService {
     }
 
     //Actualitzem els camps que ens interesin entre username,email, descripcio
-    public String updateProfileUser(Usuari user) {
+    public String updateUser(Usuari user) {
 
         usuariRepository.save(user);
 
