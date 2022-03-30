@@ -146,6 +146,16 @@ public class UsuariController extends BaseController {
 
         return user;
     }
+    @PutMapping("/setNotifications")
+    public Usuari changeNotifications(HttpSession httpSession,@RequestBody UserNotifications u){
+        Long loggedUserId = obtenirSessioUsuari(httpSession);
+
+        Usuari usuari = usuariService.getUser(loggedUserId);
+
+        usuari.setNotificarCancons(u.notifications);
+        usuariService.updateUser(usuari);
+        return usuari;
+    }
 
     @DeleteMapping("/{id}")
     public String deleteUser(HttpSession session,@PathVariable("id") Long userId){
@@ -194,5 +204,10 @@ public class UsuariController extends BaseController {
         public String currentPassword;
         @NotNull
         public String newPassword;
+    }
+
+    static class UserNotifications{
+        @NotNull
+        public Boolean notifications;
     }
 }
