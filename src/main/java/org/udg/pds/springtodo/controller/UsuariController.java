@@ -61,7 +61,7 @@ public class UsuariController extends BaseController {
         }
         user.setDescription(ru.description);
         user.setImage(ru.image);
-        usuariService.updateProfileUser(user);
+        usuariService.updateUser(user);
         return user;
     }
 
@@ -76,7 +76,7 @@ public class UsuariController extends BaseController {
     public Usuari logUser(HttpSession session, @Valid @RequestBody LoginUser usuari){
         comprovarNoLogejat(session);
 
-        Usuari u = usuariService.comprovarContrasenya(usuari.nomUsuari, usuari.password);
+        Usuari u = usuariService.comprovarContrasenya(usuari.identity, usuari.password);
         session.setAttribute("simpleapp_auth_id", u.getId());
         return u;
     }
@@ -107,7 +107,7 @@ public class UsuariController extends BaseController {
                     artistaService.guardarArtista(a);
                     u.setJoComArtista(a);
                 }
-                usuariService.guardarUsuari(u);
+                usuariService.updateUser(u);
                 session.setAttribute("simpleapp_auth_id", u.getId());
                 return u;
             }
@@ -124,10 +124,10 @@ public class UsuariController extends BaseController {
 
         Usuari usuari = usuariService.getUser(loggedUserId);
 
-        if(usuariService.comprovarContrasenya(usuari.getNomUsuari(),changePasswordUser.oldPassword) != null){
+        if(usuariService.comprovarContrasenya(usuari.getNomUsuari(),changePasswordUser.currentPassword) != null){
 
-            if(!changePasswordUser.oldPassword.equals(changePasswordUser.password)){
-                usuari.setPassword(changePasswordUser.password);
+            if(!changePasswordUser.currentPassword.equals(changePasswordUser.newPassword)){
+                usuari.setPassword(changePasswordUser.newPassword);
                 usuariService.guardarUsuari(usuari);
             }
 
@@ -147,6 +147,16 @@ public class UsuariController extends BaseController {
 
         return user;
     }
+    @PutMapping("/setNotifications")
+    public Usuari changeNotifications(HttpSession httpSession,@RequestBody UserNotifications u){
+        Long loggedUserId = obtenirSessioUsuari(httpSession);
+
+        Usuari usuari = usuariService.getUser(loggedUserId);
+
+        usuari.setNotificarCancons(u.notifications);
+        usuariService.updateUser(usuari);
+        return usuari;
+    }
 
     @DeleteMapping("/{id}")
     public String deleteUser(HttpSession session,@PathVariable("id") Long userId){
@@ -156,7 +166,7 @@ public class UsuariController extends BaseController {
 
     static class LoginUser {
         @NotNull
-        public String nomUsuari;
+        public String identity;
         @NotNull
         public String password;
     }
@@ -192,8 +202,13 @@ public class UsuariController extends BaseController {
 
     static class ChangePasswordUser {
         @NotNull
-        public String oldPassword;
+        public String currentPassword;
         @NotNull
-        public String password;
+        public String newPassword;
+    }
+
+    static class UserNotifications{
+        @NotNull
+        public Boolean notifications;
     }
 }
