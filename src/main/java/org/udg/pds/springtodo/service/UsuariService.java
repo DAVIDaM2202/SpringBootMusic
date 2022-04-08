@@ -17,7 +17,6 @@ public class UsuariService {
 
     public void guardarUsuari(Usuari u){
         u.setPassword(BCrypt.withDefaults().hashToString(12, u.getPassword().toCharArray()));
-        u.setImage("https://www.webespacio.com/wp-content/uploads/2012/01/foto-perfil.jpg");
         usuariRepository.save(u);
     }
 

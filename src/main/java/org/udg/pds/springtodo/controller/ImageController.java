@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.udg.pds.springtodo.Global;
 import org.udg.pds.springtodo.controller.exceptions.ControllerException;
+import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
@@ -25,6 +27,9 @@ public class ImageController extends BaseController {
     @Autowired
     Global global;
 
+    @Autowired
+    UsuariService usuariService;
+
     @PostMapping("")
     public String upload(HttpSession session,
                          @RequestParam("file") MultipartFile file) {
@@ -34,20 +39,22 @@ public class ImageController extends BaseController {
             throw new ControllerException("Minio client not configured");
 
         try {
-            // Handle the body of that part with an InputStream
             InputStream istream = file.getInputStream();
             String contentType = file.getContentType();
             UUID imgName = UUID.randomUUID();
 
             String objectName = imgName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            // Upload the file to the bucket with putObject
             minioClient.putObject(
                 PutObjectArgs.builder()
                     .bucket(global.getMinioBucket())
                     .object(objectName)
                     .stream(istream, -1, 10485760)
                     .build());
+            Long loggedUserId = obtenirSessioUsuari(session);
+            Usuari user = usuariService.getUser(loggedUserId);
 
+            user.setImage("http://localhost:8080/images/"+objectName);
+            usuariService.updateUser(user);
             return String.format("\"%s\"", "http://localhost:8080/images/" + objectName);
         } catch (Exception e) {
             throw new ControllerException("Error saving file: " + e.getMessage());
@@ -65,8 +72,6 @@ public class ImageController extends BaseController {
             InputStream file = minioClient.getObject(global.getMinioBucket(), filename);
             InputStreamResource body = new InputStreamResource(file);
             HttpHeaders headers = new HttpHeaders();
-            // headers.setContentLength(body.contentLength());
-            // headers.setContentDispositionFormData("attachment", "test.csv");
             headers.setContentType(MediaType.parseMediaType(URLConnection.guessContentTypeFromName(filename)));
             return ResponseEntity.ok().headers(headers).body(body);
 
@@ -74,7 +79,6 @@ public class ImageController extends BaseController {
             throw new ControllerException("Error downloading file: " + e.getMessage());
         }
     }
-
 }
 
 

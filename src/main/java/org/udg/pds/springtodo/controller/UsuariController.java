@@ -60,7 +60,7 @@ public class UsuariController extends BaseController {
             }
         }
         user.setDescription(ru.description);
-        user.setImage(ru.image);
+        //user.setImage(ru.image);
         usuariService.updateUser(user);
         return user;
     }
