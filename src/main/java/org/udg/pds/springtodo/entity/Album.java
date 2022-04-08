@@ -3,7 +3,7 @@ package org.udg.pds.springtodo.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name="album")
+@Entity(name="albums")
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

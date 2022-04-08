@@ -13,4 +13,8 @@ public class ArtistaService {
     public void guardarArtista(Artista artista){
         artistaRepository.save(artista);
     }
+
+    public Artista obtenirPerId(Long id) {
+        return artistaRepository.getById(id);
+    }
 }
