@@ -29,6 +29,8 @@ public class Artista {
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    Set<Album> albums = new HashSet<>();
 
     //Constructors
 
