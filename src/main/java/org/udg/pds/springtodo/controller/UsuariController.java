@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo.controller;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class UsuariController extends BaseController {
             }
         }
         user.setDescription(ru.description);
-        user.setImage(ru.image);
+        //user.setImage(ru.image);
         usuariService.updateUser(user);
         return user;
     }

@@ -88,7 +88,8 @@ public class Global {
             Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
             Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
             Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
-            user1.setImage("https://media-exp1.licdn.com/dms/image/C4D03AQFDHa3drd2ucQ/profile-displayphoto-shrink_200_200/0/1623748972946?e=1653523200&v=beta&t=66MLxykiLbCBpe5kxgHrrgSG4pU5mku8JmUfY4VINp0");
+            //user1.setImage("https://media-exp1.licdn.com/dms/image/C4D03AQFDHa3drd2ucQ/profile-displayphoto-shrink_200_200/0/1623748972946?e=1653523200&v=beta&t=66MLxykiLbCBpe5kxgHrrgSG4pU5mku8JmUfY4VINp0");
+            user1.setImage("http://localhost:8080/images/gerard.jpg");
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);
