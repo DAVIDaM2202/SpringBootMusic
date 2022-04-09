@@ -49,7 +49,7 @@ public class AlbumController extends BaseController {
     }
 
     @PutMapping( "/{id}")
-    public void modifyImageAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
+    public void modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -65,6 +65,20 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+        }else
+            throw new ServiceException("Aquest album no forma part del artista");
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
+        Long idUsuari = obtenirSessioUsuari(httpSession);
+
+        Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
+
+        Album album = albumService.obtenirAlbumPerId(id);
+
+        if(albumService.buscarAlbumPerArtista(artista).contains(album)){
+            albumService.esborrarAlbum(album);
         }else
             throw new ServiceException("Aquest album no forma part del artista");
     }

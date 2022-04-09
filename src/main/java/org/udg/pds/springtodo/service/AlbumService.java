@@ -19,6 +19,10 @@ public class AlbumService {
         albumRepository.save(album);
     }
 
+    public void esborrarAlbum(Album album){
+        albumRepository.delete(album);
+    }
+
     public Collection<Album> obtenirAlbums(){
         return albumRepository.getAll();
     }
