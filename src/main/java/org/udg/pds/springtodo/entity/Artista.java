@@ -29,6 +29,9 @@ public class Artista {
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();
 
+    @OneToMany(mappedBy = "artista")
+    private Set<Canco> cancons;
+
 
     //Constructors
 
