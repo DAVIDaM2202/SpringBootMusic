@@ -104,11 +104,9 @@ public class Global {
             userService.guardarUsuari(user6);
 
             // Creació d'Artista per fer proves alhora de pujar albums, cançons, o etc.
-            Artista artista1 = new Artista(user2);
-            artistaService.guardarArtista(artista1);
-
+            Artista DjDuffman = new Artista(user4);
+            artistaService.guardarArtista(DjDuffman);
         }
-
     }
 
     public MinioClient getMinioClient() {
