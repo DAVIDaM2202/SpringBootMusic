@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,10 @@ public class Global {
     @Autowired
     private
     UsuariService userService;
+
+    @Autowired
+    private
+    ArtistaService artistaService;
 
     @Autowired
     private Environment environment;
@@ -89,21 +94,19 @@ public class Global {
             Usuari user4 = new Usuari("Marc","arnau@gmail.com","arnau","El papa",false);
             Usuari user5 = new Usuari("Carla","davesa@gmail.com","4321","La secretaria",false);
             Usuari user6 = new Usuari("Bernat","berni@gmail.com","computacio","El que treballa a Haribo",false);
-            user1.setImage("https://media-exp1.licdn.com/dms/image/C4D03AQFDHa3drd2ucQ/profile-displayphoto-shrink_200_200/0/1623748972946?e=1653523200&v=beta&t=66MLxykiLbCBpe5kxgHrrgSG4pU5mku8JmUfY4VINp0");
-
-            Artista a = new Artista(user4);
-            user4.setJoComArtista(a);
-            artistaService.guardarArtista(a);
-
+            //user1.setImage("https://media-exp1.licdn.com/dms/image/C4D03AQFDHa3drd2ucQ/profile-displayphoto-shrink_200_200/0/1623748972946?e=1653523200&v=beta&t=66MLxykiLbCBpe5kxgHrrgSG4pU5mku8JmUfY4VINp0");
+            user1.setImage("http://localhost:8080/images/gerard.jpg");
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);
-            userService.guardarUsuari(user4); ///-> AQUEST JA NO FA FALTA PER ARA NO?
+            userService.guardarUsuari(user4);
             userService.guardarUsuari(user5);
             userService.guardarUsuari(user6);
 
+            // Creació d'Artista per fer proves alhora de pujar albums, cançons, o etc.
+            Artista DjDuffman = new Artista(user4);
+            artistaService.guardarArtista(DjDuffman);
         }
-
     }
 
     public MinioClient getMinioClient() {

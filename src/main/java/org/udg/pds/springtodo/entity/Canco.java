@@ -3,8 +3,6 @@ package org.udg.pds.springtodo.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity(name = "canco")
 public class Canco implements Serializable {
@@ -27,11 +25,9 @@ public class Canco implements Serializable {
 
     private String imatge;
 
-
     private Integer reproduccions;
 
     private Double valoracio;
-
 
     //relacions
     @ManyToOne
@@ -82,9 +78,7 @@ public class Canco implements Serializable {
         return nomCanco;
     }
 
-    public void setNomCanco(String nomCanco) {
-        this.nomCanco = nomCanco;
-    }
+    public void setNomCanco(String nomCanco) {this.nomCanco = nomCanco;}
 
     public String genere() {
         return genere;
@@ -102,7 +96,6 @@ public class Canco implements Serializable {
         this.any = any;
     }
 
-
     public String getImatge() {
         return imatge;
     }
@@ -111,15 +104,11 @@ public class Canco implements Serializable {
         this.imatge = imatge;
     }
 
-
-
     public Integer getReproduccions() {
         return reproduccions;
     }
 
-    public void setReproduccions(Integer reproduccions) {
-        this.reproduccions = reproduccions;
-    }
+    public void setReproduccions(Integer reproduccions) {this.reproduccions = reproduccions; }
 
     public Double getValoracio() {
         return valoracio;
@@ -128,6 +117,4 @@ public class Canco implements Serializable {
     public void setValoracio(Double valoracio) {
         this.valoracio = valoracio;
     }
-
-
 }

@@ -65,13 +65,12 @@ public class CancoController extends BaseController {
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
         if (u.getJoComArtista()!=null){
-            Artista a = artistaService.obtenirPerId(id);
+            Artista a = artistaService.obtenirPerUsuariId(id);
             Canco c = new Canco(canco.nomCanco,canco.genere,canco.any,canco.imatge,a);
             return cancoService.guardarCanco(c);
         }else {
             throw new ServiceException("No ets un artista");
         }
-
     }
 
     @DeleteMapping(path="/{id}")
