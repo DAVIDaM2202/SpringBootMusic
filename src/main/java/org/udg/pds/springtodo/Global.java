@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +29,10 @@ public class Global {
     @Autowired
     private
     UsuariService userService;
+
+    @Autowired
+    private
+    ArtistaService artistaService;
 
     @Autowired
     private Environment environment;
@@ -96,6 +102,10 @@ public class Global {
             userService.guardarUsuari(user4);
             userService.guardarUsuari(user5);
             userService.guardarUsuari(user6);
+
+            // Creació d'Artista per fer proves alhora de pujar albums, cançons, o etc.
+            Artista artista1 = new Artista(user2);
+            artistaService.guardarArtista(artista1);
 
         }
 
