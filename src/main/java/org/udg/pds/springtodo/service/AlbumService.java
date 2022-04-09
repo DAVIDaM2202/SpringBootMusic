@@ -24,7 +24,6 @@ public class AlbumService {
     }
 
     public Album obtenirAlbumPerId(Long id){
-
         Optional<Album> album = albumRepository.findById(id);
 
         if(album.isPresent())

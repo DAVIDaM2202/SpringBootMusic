@@ -1,9 +1,11 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name="albums")
+@Entity(name="album")
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,28 +25,33 @@ public class Album {
 
     public Album(){};
 
-    public Album(String titol, String imatge, String descripcio){
+    public Album(String titol, String imatge, String descripcio, Artista artista){
         this.titol = titol;
         this.imatge = imatge;
         this.descripcio = descripcio;
+        this.artista = artista;
     };
 
     /**
      * GETTERS
      * */
 
+    @JsonView(Views.Private.class)
     public Long getIdAlbum() {
         return idAlbum;
     }
 
+    @JsonView(Views.Public.class)
     public String getTitol(){
         return titol;
     }
 
+    @JsonView(Views.Public.class)
     public String getImatge(){
         return imatge;
     }
 
+    @JsonView(Views.Public.class)
     public String getDescripcio(){
         return descripcio;
     }
