@@ -97,6 +97,9 @@ public class Global {
             //user1.setImage("https://media-exp1.licdn.com/dms/image/C4D03AQFDHa3drd2ucQ/profile-displayphoto-shrink_200_200/0/1623748972946?e=1653523200&v=beta&t=66MLxykiLbCBpe5kxgHrrgSG4pU5mku8JmUfY4VINp0");
             user1.setImage("http://localhost:8080/images/gerard.jpg");
             userService.guardarUsuari(user1);
+           // Artista artista = new Artista(user1);
+           // artistaService.guardarArtista(artista);
+           // user1.setJoComArtista(artista);
             userService.guardarUsuari(user2);
             userService.guardarUsuari(user3);
             userService.guardarUsuari(user4);
@@ -106,6 +109,9 @@ public class Global {
             // Creació d'Artista per fer proves alhora de pujar albums, cançons, o etc.
             Artista DjDuffman = new Artista(user4);
             artistaService.guardarArtista(DjDuffman);
+            user4.setJoComArtista(DjDuffman);
+
+
         }
     }
 
