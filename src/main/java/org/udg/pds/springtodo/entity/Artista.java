@@ -2,6 +2,7 @@ package org.udg.pds.springtodo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,6 @@ public class Artista {
 
     //Relacions
 
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
@@ -28,6 +28,8 @@ public class Artista {
 
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();
+
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
     Set<Album> albums = new HashSet<>();
@@ -43,7 +45,7 @@ public class Artista {
 
     //Getters i setters
 
-
+    @JsonView(Views.Public.class)
     public Long getIdArtista() {
         return idArtista;
     }
@@ -52,6 +54,7 @@ public class Artista {
         this.idArtista = idArtista;
     }
 
+    @JsonView(Views.Public.class)
     public Boolean getNotificacionsComentaris() {
         return notificacionsComentaris;
     }
@@ -68,6 +71,7 @@ public class Artista {
         this.joComUsuari = joComUsuari;
     }
 
+    @JsonView(Views.Public.class)
     public Set<Usuari> getFollowers() {
         return followers;
     }
@@ -75,4 +79,10 @@ public class Artista {
     public void setFollowers(Set<Usuari> followers) {
         this.followers = followers;
     }
+
+    @JsonView(Views.Public.class)
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
 }

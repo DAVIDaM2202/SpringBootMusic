@@ -98,6 +98,15 @@ public class AlbumController extends BaseController {
         return albumService.buscarAlbumPerArtista(artista);
     }
 
+    @GetMapping("/artista/me")
+    @JsonView(Views.Public.class)
+    public Collection<Album> getmyAlbums(HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        Long loggedUserId=obtenirSessioUsuari(httpSession);
+        Artista artista = artistaService.obtenirPerUsuariId(loggedUserId);
+        return albumService.buscarAlbumPerArtista(artista);
+    }
+
     static class UpdateAlbum {
         public String titol;
         public String imatge;
@@ -110,6 +119,4 @@ public class AlbumController extends BaseController {
         public String imatge;
         public String descripcio;
     }
-
-
 }
