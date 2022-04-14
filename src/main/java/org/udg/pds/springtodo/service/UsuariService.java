@@ -86,6 +86,7 @@ public class UsuariService {
         return usuariRepository.buscarPerCorreu(email).isEmpty();
     }
 
+    public List<Usuari> getAll(){return usuariRepository.findAll();}
 
 
 

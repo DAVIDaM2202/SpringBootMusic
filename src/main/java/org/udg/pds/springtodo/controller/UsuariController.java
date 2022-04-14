@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping(path="/usuaris")
 @RestController
@@ -25,8 +26,8 @@ public class UsuariController extends BaseController {
     ArtistaService artistaService;
 
     @GetMapping
-    public Collection<Usuari> getAllUsers(HttpSession session){
-        return null;
+    public List<Usuari> getAllUsers(HttpSession session){
+        return usuariService.getAll();
     }
     //Ens retorna els camps del usuari
     @GetMapping("/profile")
