@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping(path="/usuaris")
 @RestController
@@ -26,7 +27,7 @@ public class UsuariController extends BaseController {
 
     @GetMapping
     public Collection<Usuari> getAllUsers(HttpSession session){
-        return null;
+        return usuariService.obtenirTots();
     }
     //Ens retorna els camps del usuari
     @GetMapping("/profile")
@@ -69,6 +70,13 @@ public class UsuariController extends BaseController {
     public String checkLoggedIn(HttpSession session) {
         obtenirSessioUsuari(session);
         return BaseController.OK_MESSAGE;
+    }
+
+    @GetMapping(path = "/search/{cadena}")
+    @JsonView(Views.Public.class)
+    public List<Usuari> getSearchedUsers(HttpSession session,@PathVariable("cadena") String cadena){
+        comprovarLogejat(session);
+        return usuariService.obtenirUsuarisPerNom(cadena);
     }
 
     @PostMapping(path="/login")
