@@ -1,11 +1,12 @@
 package org.udg.pds.springtodo.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name="artistes")
 public class Artista {
     //Atributs
     @Id
@@ -16,26 +17,30 @@ public class Artista {
     private Boolean notificacionsComentaris;
 
     //Relacions
-
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
 
     @ManyToMany(mappedBy = "following")
-    Set<Usuari> followers;
+    Set<Usuari> followers=new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    Set<Album> albums = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    Set<Canco> cancons = new HashSet<>();
 
     //Constructors
 
     public Artista(){}
 
-    public Artista(Boolean notificacionsComentaris,Usuari usuari){
+    public Artista(Usuari usuari){
         this.joComUsuari=usuari;
-        this.notificacionsComentaris=notificacionsComentaris;
+        this.notificacionsComentaris=false;
     }
 
     //Getters i setters
-
 
     public Long getIdArtista() {
         return idArtista;
@@ -68,4 +73,5 @@ public class Artista {
     public void setFollowers(Set<Usuari> followers) {
         this.followers = followers;
     }
+
 }

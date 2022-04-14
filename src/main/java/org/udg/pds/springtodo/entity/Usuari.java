@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "usuaris")
@@ -32,14 +33,18 @@ public class Usuari implements Serializable {
     @NotNull
     private Boolean notificarCancons;
 
+
+    private String image;
+
     //Relacions
 
+    @JsonIgnore
     @OneToOne(mappedBy = "joComUsuari")
     private Artista joComArtista; //pot ser Null
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "usuari_segueix_artista", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
-    Set<Artista> following;
+    Set<Artista> following=new HashSet<>();
 
 
     //Constructors
@@ -51,6 +56,13 @@ public class Usuari implements Serializable {
         this.password = password;
         this.description = description;
         this.notificarCancons = notificarCancons;
+    }
+    public Usuari(String nomUsuari, String email, String password) {
+        this.nomUsuari = nomUsuari;
+        this.email = email;
+        this.password = password;
+        this.description = "";
+        this.notificarCancons = false;
     }
 
     //Getters i setters
@@ -73,7 +85,7 @@ public class Usuari implements Serializable {
         this.nomUsuari = nomUsuari;
     }
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public String getEmail() {
         return email;
     }
@@ -91,7 +103,7 @@ public class Usuari implements Serializable {
         this.password = password;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public String getDescription() {
         return description;
     }
@@ -100,7 +112,7 @@ public class Usuari implements Serializable {
         this.description = description;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Boolean getNotificarCancons() {
         return notificarCancons;
     }
@@ -109,7 +121,7 @@ public class Usuari implements Serializable {
         this.notificarCancons = notificarCancons;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Artista getJoComArtista() {
         return joComArtista;
     }
@@ -118,7 +130,7 @@ public class Usuari implements Serializable {
         this.joComArtista = joComArtista;
     }
 
-    @JsonIgnore
+    @JsonView(Views.Public.class)
     public Set<Artista> getFollowing() {
         return following;
     }
@@ -126,4 +138,14 @@ public class Usuari implements Serializable {
     public void setFollowing(Set<Artista> following) {
         this.following = following;
     }
+
+    @JsonView(Views.Public.class)
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }
