@@ -35,7 +35,7 @@ public class CancoController extends BaseController {
 
     @PostMapping
     public Canco crearCanco(HttpSession session,@RequestBody afegirCanco canco){
-
+        comprovarLogejat(session);
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
         if (u.getJoComArtista()!=null){

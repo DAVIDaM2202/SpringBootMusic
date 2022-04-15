@@ -183,9 +183,9 @@ public class Global {
             Canco canco2 = new Canco("Soldier","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2);
             Canco canco3 = new Canco("Superman","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2);
 
-            Canco canco4 = new Canco("Godzilla (feat.Juice WRLD)","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
-            Canco canco5 = new Canco("Stepdad","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
-            Canco canco6 = new Canco("Farewell","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
+            Canco canco4 = new Canco("Godzilla (feat.Juice WRLD)","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2);
+            Canco canco5 = new Canco("Stepdad","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2);
+            Canco canco6 = new Canco("Farewell","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2);
 
             Canco canco7 = new Canco("MOJAITA","Regeton",2019,"http://localhost:8080/images/oasis.JPG",artista3);
             Canco canco8 = new Canco("ODIO","Regeton",2019,"http://localhost:8080/images/oasis.JPG",artista3);
