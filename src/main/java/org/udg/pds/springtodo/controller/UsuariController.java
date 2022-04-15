@@ -108,7 +108,7 @@ public class UsuariController extends BaseController {
             }
             //Guardar usuari i artista si fos el cas
             else {
-                Usuari u = new Usuari(ru.username,ru.email,ru.password);
+                Usuari u = new Usuari(ru.username,ru.email,ru.password,"http://localhost:8080/images/anonim.JPG");
                 usuariService.guardarUsuari(u);
                 if(ru.artist){
                     Artista a = new Artista(u);

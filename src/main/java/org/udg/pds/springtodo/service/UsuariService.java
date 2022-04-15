@@ -89,8 +89,8 @@ public class UsuariService {
     }
 
     public List<Usuari> obtenirUsuarisPerNom(String cadena){
-        Pageable loadFour = PageRequest.of(0, 4);
-        return usuariRepository.getAllByNomUsuariContains(cadena,loadFour);
+        Pageable loadSix = PageRequest.of(0, 6);
+        return usuariRepository.getAllByNomUsuariContains(cadena,loadSix);
     }
     public List<Usuari> obtenirTots(){
         return usuariRepository.findAll();

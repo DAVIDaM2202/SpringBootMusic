@@ -18,5 +18,5 @@ public interface UsuariRepository extends JpaRepository<Usuari,Long> {
     @Query("SELECT u FROM usuaris u WHERE u.email=:email")
     List<Usuari> buscarPerCorreu(@Param("email") String email);
 
-    List<Usuari>getAllByNomUsuariContains(String cadena, Pageable loadFour);
+    List<Usuari>getAllByNomUsuariContains(String cadena, Pageable loadSix);
 }
