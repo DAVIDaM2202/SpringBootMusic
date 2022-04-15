@@ -12,6 +12,7 @@ import org.udg.pds.springtodo.service.UsuariService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping(path="/cancons")
 @RestController
@@ -103,6 +104,13 @@ public class CancoController extends BaseController {
         comprovarLogejat(httpSession);
         Artista artista = artistaService.obtenirPerId(idArtista);
         return cancoService.buscarCancoPerArtista(artista);
+    }
+
+    @GetMapping(path = "/search/{cadena}")
+    @JsonView(Views.Public.class)
+    public List<Canco> getSearchedSongs(HttpSession session, @PathVariable("cadena") String cadena){
+        comprovarLogejat(session);
+        return cancoService.obtenirCanconsContenenCadena(cadena);
     }
 
     @GetMapping("/artista/me")
