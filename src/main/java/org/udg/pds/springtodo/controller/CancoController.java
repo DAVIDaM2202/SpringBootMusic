@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
-import org.udg.pds.springtodo.entity.Artista;
-import org.udg.pds.springtodo.entity.Canco;
-import org.udg.pds.springtodo.entity.Usuari;
-import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.entity.*;
 import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.CancoService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RequestMapping(path="/cancons")
@@ -25,38 +23,13 @@ public class CancoController extends BaseController {
     @Autowired
     UsuariService usuariService;
 
-    @GetMapping
-    public Collection<Canco> getAllCancons(HttpSession session){  //Ens retorna totes les cançons
-        obtenirSessioUsuari(session);
-        return cancoService.getCancons();
-    }
-
-    @GetMapping(path="/{idCanco}")
+    @GetMapping("")
     @JsonView(Views.Public.class)
-    public Canco getCancoById(HttpSession session,@PathVariable("idCanco")Long cancoId){
-        obtenirSessioUsuari(session);
-        return cancoService.getCanco(cancoId);
-    }
 
-    /*@GetMapping(path="/{genere}")
-    @JsonView(Views.Public.class)
-    public Collection<Canco> getCancoByGenre(HttpSession session,@PathVariable("genere")String genere){
-        obtenirSessioUsuari(session);
-        return cancoService.getCanconsGenere(genere);
-    }*/
 
-    /*@GetMapping(path="/{idAlbum}")
-    @JsonView(Views.Public.class)
-    public Collection<Canco> getCancoByAlbum(HttpSession session,@PathVariable("idAlbum")Integer idAlbum){
-        obtenirSessioUsuari(session);
-        return cancoService.getCanconsAlbum(idAlbum);
-    }*/
-
-    @GetMapping(path="/{artista}")
-    @JsonView(Views.Public.class)
-    public Collection<Canco> getCancoByArtist(HttpSession session,@PathVariable("artista")String artista){
-        obtenirSessioUsuari(session);
-        return cancoService.getCanconsArtista(artista);
+    public Collection<Canco> getAllCancons (HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        return cancoService.obtenirCancons();
     }
 
     @PostMapping
@@ -73,12 +46,81 @@ public class CancoController extends BaseController {
         }
     }
 
-    @DeleteMapping(path="/{id}")
+    @GetMapping("/{id}")
     @JsonView(Views.Public.class)
-    public String delCancoById(HttpSession session,@PathVariable("id")Long cancoId){
-        obtenirSessioUsuari(session);
-        cancoService.crud().deleteById(cancoId);
-        return BaseController.OK_MESSAGE;
+    public Canco getCancoById(HttpSession httpSession, @PathVariable("id") Long id){
+        comprovarLogejat(httpSession);
+        return cancoService.obtenirCancoById(id);
+    }
+
+    @PutMapping( "/{id}")
+    public void modifyCanco(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateCanco cancoUpdate){
+        Long idUsuari = obtenirSessioUsuari(httpSession);
+
+        Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
+
+        Canco canco = cancoService.obtenirCancoById(id);
+
+        if(cancoService.buscarCancoPerArtista(artista).contains(canco)){
+            if(cancoUpdate.nomCanco != null)
+                canco.setNomCanco(cancoUpdate.nomCanco);
+            if(cancoUpdate.imatge != null)
+                canco.setImatge(cancoUpdate.imatge);
+            if(cancoUpdate.any != null)
+                canco.setAny(cancoUpdate.any);
+            if(cancoUpdate.genere != null)
+                canco.setGenere(cancoUpdate.genere);
+
+            cancoService.guardarCanco(canco);
+        }else
+            throw new ServiceException("Aquest cançó no forma part del artista");
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCanco(HttpSession httpSession, @PathVariable("id") Long id){
+        Long idUsuari = obtenirSessioUsuari(httpSession);
+
+        Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
+
+        Canco canco = cancoService.obtenirCancoById(id);
+
+        if(cancoService.buscarCancoPerArtista(artista).contains(canco)){
+            cancoService.esborrarCanco(canco);
+        }else
+            throw new ServiceException("Aquesta cançó no forma part del artista");
+    }
+
+    @GetMapping("/titol/{titol}")
+    @JsonView(Views.Public.class)
+    public Collection<Canco> getAllCanconsByTitle(HttpSession httpSession, @PathVariable("titol") String titol){
+        comprovarLogejat(httpSession);
+        return cancoService.buscarCancoPerTitol(titol);
+    }
+
+    @GetMapping("/artista/{id}")
+    @JsonView(Views.Public.class)
+    public Collection<Canco> getAllCanconsByArtista(HttpSession httpSession, @PathVariable("id") Long idArtista){
+        comprovarLogejat(httpSession);
+        Artista artista = artistaService.obtenirPerId(idArtista);
+        return cancoService.buscarCancoPerArtista(artista);
+    }
+
+    @GetMapping("/artista/me")
+    @JsonView(Views.Public.class)
+    public Collection<Canco> getmyCancons(HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        Long loggedUserId=obtenirSessioUsuari(httpSession);
+
+        Artista artista = artistaService.obtenirPerUsuariId(loggedUserId);
+        return cancoService.buscarCancoPerArtista(artista);
+    }
+
+
+    static class UpdateCanco {
+        public String nomCanco;
+        public String genere;
+        public Integer any;
+        public String imatge;
     }
 
     static class afegirCanco{

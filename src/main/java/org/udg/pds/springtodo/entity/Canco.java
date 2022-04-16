@@ -1,13 +1,11 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity(name = "canco")
-public class Canco implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Canco {
 
     //Atributs
     @Id
@@ -30,8 +28,8 @@ public class Canco implements Serializable {
     private Double valoracio;
 
     //relacions
-    @ManyToOne
-    @JoinColumn(name="artista")
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
     /*
@@ -55,39 +53,32 @@ public class Canco implements Serializable {
         this.artista = artista;
     }
 
-    public Canco(Long idCanco, String nomCanco, String genere, Integer any, String artista, String imatge, Integer idAlbum, Integer reproduccions, Double valoracio, Integer idUsuari) {
-        this.idCanco = idCanco;
-        this.nomCanco = nomCanco;
-        this.genere = genere;
-        this.any = any;
-        this.imatge = imatge;
-        this.reproduccions = reproduccions;
-        this.valoracio = valoracio;
-    }
-
     //Getters i setters
+    @JsonView(Views.Public.class)
     public Long getIdCanco() {
         return idCanco;
     }
 
-    public void setIdCanco(Long id) {
-        this.idCanco = id;
+    public void setIdCanco(Long idCanco) {
+        this.idCanco = idCanco;
     }
-
-    public String nomCanco() {
+    @JsonView(Views.Public.class)
+    public String getNomCanco() {
         return nomCanco;
     }
 
-    public void setNomCanco(String nomCanco) {this.nomCanco = nomCanco;}
-
-    public String genere() {
+    public void setNomCanco(String nomCanco) {
+        this.nomCanco = nomCanco;
+    }
+    @JsonView(Views.Public.class)
+    public String getGenere() {
         return genere;
     }
 
     public void setGenere(String genere) {
         this.genere = genere;
     }
-
+    @JsonView(Views.Public.class)
     public Integer getAny() {
         return any;
     }
@@ -95,26 +86,36 @@ public class Canco implements Serializable {
     public void setAny(Integer any) {
         this.any = any;
     }
-
+    @JsonView(Views.Public.class)
     public String getImatge() {
         return imatge;
     }
 
-    public void setImage(String imatge) {
+    public void setImatge(String imatge) {
         this.imatge = imatge;
     }
-
+    @JsonView(Views.Public.class)
     public Integer getReproduccions() {
         return reproduccions;
     }
 
-    public void setReproduccions(Integer reproduccions) {this.reproduccions = reproduccions; }
-
+    public void setReproduccions(Integer reproduccions) {
+        this.reproduccions = reproduccions;
+    }
+    @JsonView(Views.Public.class)
     public Double getValoracio() {
         return valoracio;
     }
 
     public void setValoracio(Double valoracio) {
         this.valoracio = valoracio;
+    }
+    @JsonView(Views.Public.class)
+    public Artista getArtista() {
+        return artista;
+    }
+
+    public void setArtista(Artista artista) {
+        this.artista = artista;
     }
 }
