@@ -50,11 +50,7 @@ public class ImageController extends BaseController {
                     .object(objectName)
                     .stream(istream, -1, 10485760)
                     .build());
-            Long loggedUserId = obtenirSessioUsuari(session);
-            Usuari user = usuariService.getUser(loggedUserId);
 
-            user.setImage("http://localhost:8080/images/"+objectName);
-            usuariService.updateUser(user);
             return String.format("\"%s\"", "http://localhost:8080/images/" + objectName);
         } catch (Exception e) {
             throw new ControllerException("Error saving file: " + e.getMessage());

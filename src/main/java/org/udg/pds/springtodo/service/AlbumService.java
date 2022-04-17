@@ -1,13 +1,17 @@
 package org.udg.pds.springtodo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Album;
 import org.udg.pds.springtodo.entity.Artista;
+import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.repository.AlbumRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,5 +46,10 @@ public class AlbumService {
 
     public Collection<Album> buscarAlbumPerArtista(Artista artista){
         return albumRepository.findAllByArtista(artista);
+    }
+
+    public List<Album> obtenirAlbumsContenenCadena(String cadena){
+        Pageable loadSix = PageRequest.of(0, 6);
+        return albumRepository.getAllByTitolContains(cadena,loadSix);
     }
 }
