@@ -158,7 +158,7 @@ public class Global {
             Album album4 = new Album("YHLQMDLG","http://localhost:8080/images/yhlqmdlg.JPG","",artista3);
 
             Album album5 = new Album("All Eyez On Me","http://localhost:8080/images/allEyezOnMe.JPG","",artista4);
-            Album album6 = new Album("Me Againts The World","http://localhost:8080/images/meAgaintsTheWorld.JPG","",artista4);
+            Album album6 = new Album("Me Against The World","http://localhost:8080/images/meAgainstTheWorld.JPG","",artista4);
 
             Album album7 = new Album("Ready to Die","http://localhost:8080/images/readyToDie.JPG","",artista5);
             Album album8 = new Album("Life After Death","http://localhost:8080/images/lifeAfterDeath.JPG","",artista5);
