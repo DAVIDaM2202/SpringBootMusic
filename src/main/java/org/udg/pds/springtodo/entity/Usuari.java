@@ -50,24 +50,26 @@ public class Usuari implements Serializable {
     //Constructors
     public Usuari(){}
 
-    public Usuari(String nomUsuari, String email, String password, String description, Boolean notificarCancons) {
+    public Usuari(String nomUsuari, String email, String password, String description, Boolean notificarCancons, String image) {
         this.nomUsuari = nomUsuari;
         this.email = email;
         this.password = password;
         this.description = description;
         this.notificarCancons = notificarCancons;
+        this.image=image;
     }
-    public Usuari(String nomUsuari, String email, String password) {
+    public Usuari(String nomUsuari, String email, String password,String image) {
         this.nomUsuari = nomUsuari;
         this.email = email;
         this.password = password;
         this.description = "";
         this.notificarCancons = false;
+        this.image=image;
     }
 
     //Getters i setters
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public Long getId() {
         return id;
     }

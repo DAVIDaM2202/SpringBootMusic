@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
-import org.udg.pds.springtodo.entity.Album;
-import org.udg.pds.springtodo.entity.Artista;
-import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.entity.*;
 import org.udg.pds.springtodo.service.AlbumService;
 import org.udg.pds.springtodo.service.ArtistaService;
 
@@ -14,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/albums")
@@ -32,13 +31,23 @@ public class AlbumController extends BaseController {
     }
 
     @PostMapping("")
-    public void addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
+    public Album addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
         Long id = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(id);
 
         Album album = new Album(newAlbum.titol, newAlbum.imatge, newAlbum.descripcio, artista);
         albumService.guardarAlbum(album);
+        return album;
+    }
+
+    @PostMapping("/{id}")
+    public Album addCancoAlbum(HttpSession httpSession, @PathVariable("id") Long id, @RequestBody Canco canco){
+        comprovarLogejat(httpSession);
+        Album album = albumService.obtenirAlbumPerId(id);
+        album.setCancoAlbum(canco);
+        albumService.guardarAlbum(album);
+        return album;
     }
 
     @GetMapping("/{id}")
@@ -49,7 +58,7 @@ public class AlbumController extends BaseController {
     }
 
     @PutMapping( "/{id}")
-    public void modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
+    public Album modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -65,12 +74,13 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+            return album;
         }else
             throw new ServiceException("Aquest album no forma part del artista");
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
+    public Album deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -79,8 +89,9 @@ public class AlbumController extends BaseController {
 
         if(albumService.buscarAlbumPerArtista(artista).contains(album)){
             albumService.esborrarAlbum(album);
+            return album;
         }else
-            throw new ServiceException("Aquest album no forma part del artista");
+            throw new ServiceException("Aquest album no existeix");
     }
 
     @GetMapping("/titol/{titol}")
@@ -96,6 +107,22 @@ public class AlbumController extends BaseController {
         comprovarLogejat(httpSession);
         Artista artista = artistaService.obtenirPerId(idArtista);
         return albumService.buscarAlbumPerArtista(artista);
+    }
+
+    @GetMapping("/artista/me")
+    @JsonView(Views.Public.class)
+    public Collection<Album> getmyAlbums(HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        Long loggedUserId=obtenirSessioUsuari(httpSession);
+        Artista artista = artistaService.obtenirPerUsuariId(loggedUserId);
+        return albumService.buscarAlbumPerArtista(artista);
+    }
+
+    @GetMapping(path = "/search/{cadena}")
+    @JsonView(Views.Public.class)
+    public List<Album> getSearchedAlbums(HttpSession session, @PathVariable("cadena") String cadena){
+        comprovarLogejat(session);
+        return albumService.obtenirAlbumsContenenCadena(cadena);
     }
 
     static class UpdateAlbum {

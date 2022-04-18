@@ -1,18 +1,22 @@
 package org.udg.pds.springtodo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 
+import org.udg.pds.springtodo.entity.Album;
 import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Canco;
 import org.udg.pds.springtodo.repository.CancoRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
-@Service("cancoService")
+@Service
 public class CancoService {
 
     @Autowired
@@ -49,5 +53,10 @@ public class CancoService {
     }
 
     public Canco guardarCanco(Canco c){return cancoRepository.save(c);}
+
+    public List<Canco> obtenirCanconsContenenCadena(String cadena){
+        Pageable loadSix = PageRequest.of(0, 6);
+        return cancoRepository.getAllByNomCancoContains(cadena,loadSix);
+    }
 
 }

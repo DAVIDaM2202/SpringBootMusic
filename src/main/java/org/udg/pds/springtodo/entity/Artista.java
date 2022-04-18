@@ -1,6 +1,8 @@
 package org.udg.pds.springtodo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -42,6 +44,8 @@ public class Artista {
 
     //Getters i setters
 
+    @JsonView(Views.Public.class)
+
     public Long getIdArtista() {
         return idArtista;
     }
@@ -50,6 +54,8 @@ public class Artista {
         this.idArtista = idArtista;
     }
 
+    @JsonView(Views.Public.class)
+
     public Boolean getNotificacionsComentaris() {
         return notificacionsComentaris;
     }
@@ -57,15 +63,15 @@ public class Artista {
     public void setNotificacionsComentaris(Boolean notificacionsComentaris) {
         this.notificacionsComentaris = notificacionsComentaris;
     }
-
-    public Usuari getJoComUsuari() {
-        return joComUsuari;
+    @JsonView(Views.Public.class)
+    public String getJoComUsuari() {
+        return joComUsuari.getNomUsuari();
     }
 
     public void setJoComUsuari(Usuari joComUsuari) {
         this.joComUsuari = joComUsuari;
     }
-
+    @JsonView(Views.Public.class)
     public Set<Usuari> getFollowers() {
         return followers;
     }

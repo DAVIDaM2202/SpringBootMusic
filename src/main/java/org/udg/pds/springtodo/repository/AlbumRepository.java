@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,8 @@ public interface AlbumRepository extends JpaRepository<Album,Long> {
     List<Album> findAllByArtista(Artista artista);
 
     List<Album> findAllByTitol(String titol);
+
+    List<Album>getAllByTitolContains(String cadena, Pageable loadSix);
 
     @Query("SELECT a FROM album a")
     List<Album> getAll();
