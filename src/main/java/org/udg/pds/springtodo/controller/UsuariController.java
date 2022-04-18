@@ -36,6 +36,20 @@ public class UsuariController extends BaseController {
         Long loggedUserId=obtenirSessioUsuari(session);
         return usuariService.getUser(loggedUserId);
     }
+    @GetMapping("/profile/{id}")
+    @JsonView(Views.Public.class)
+    public Usuari getProfileById(HttpSession session,@PathVariable("id") Long userId){
+        obtenirSessioUsuari(session);
+        return usuariService.getUser(userId);
+    }
+
+
+
+    @GetMapping("/me")
+    @JsonView(Views.Public.class)
+    public Usuari GetMe(HttpSession session){
+        return usuariService.getUser(obtenirSessioUsuari(session));
+    }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
     private Usuari updateProfileUser(HttpSession session, @Valid  @RequestBody UpdateUser ru) {
@@ -61,7 +75,9 @@ public class UsuariController extends BaseController {
             }
         }
         user.setDescription(ru.description);
-        //user.setImage(ru.image);
+        if(ru.image!=null){
+            user.setImage(ru.image);
+        }
         usuariService.updateUser(user);
         return user;
     }

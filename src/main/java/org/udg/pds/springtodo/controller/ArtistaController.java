@@ -1,14 +1,16 @@
 package org.udg.pds.springtodo.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.entity.Artista;
+import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.service.ArtistaService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Collection;
 
 @Controller

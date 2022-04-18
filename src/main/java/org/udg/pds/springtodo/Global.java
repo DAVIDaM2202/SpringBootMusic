@@ -42,6 +42,7 @@ public class Global {
     private
     AlbumService albumService;
 
+
     @Autowired
     private
     CancoService cancoService;
