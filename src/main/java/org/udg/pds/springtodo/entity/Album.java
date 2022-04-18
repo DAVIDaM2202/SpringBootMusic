@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name="album")
 public class Album {
@@ -21,7 +23,8 @@ public class Album {
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
-    // TODO: Falta el OneToMany de Cançó però encara no està creat
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "canco")
+    Set<Canco> cancons = new HashSet<>();
 
     public Album(){};
 

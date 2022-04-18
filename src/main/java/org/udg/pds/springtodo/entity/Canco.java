@@ -19,11 +19,11 @@ public class Canco {
     private String genere;
 
     @NotNull
-    private Integer any;
+    private int any;
 
     private String imatge;
 
-    private Integer reproduccions;
+    private int reproduccions;
 
     private Double valoracio;
 
@@ -32,25 +32,22 @@ public class Canco {
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name="album")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Album album;
 
-    @ManyToMany (mappedBy = "cancons")
-    @JoinTable(name = "cancons_playlist", joinColumns = @JoinColumn(name = "idCanco"), inverseJoinColumns = @JoinColumn(name = "idPlaylist"))
-    Set<Playlist> playslists=new HashSet<>();
-    */
-
     //Constructors
-    public Canco(){}
+    public Canco(){};
 
-    public Canco(String nomCanco, String genere, Integer any, String imatge, Artista artista) {
+    public Canco(String nomCanco, String genere, int any, String imatge, Album album, Artista a){}
+
+    //public Canco(String nomCanco, String genere, int any, String imatge, Artista artista) {
+    public Canco(String nomCanco, String genere, int any, Artista artista, Album album) {
         this.nomCanco = nomCanco;
         this.genere = genere;
         this.any = any;
         this.imatge = imatge;
         this.artista = artista;
+        this.album = album;
     }
 
     //Getters i setters
@@ -62,6 +59,7 @@ public class Canco {
     public void setIdCanco(Long idCanco) {
         this.idCanco = idCanco;
     }
+
     @JsonView(Views.Public.class)
     public String getNomCanco() {
         return nomCanco;
@@ -70,6 +68,7 @@ public class Canco {
     public void setNomCanco(String nomCanco) {
         this.nomCanco = nomCanco;
     }
+
     @JsonView(Views.Public.class)
     public String getGenere() {
         return genere;
@@ -78,14 +77,16 @@ public class Canco {
     public void setGenere(String genere) {
         this.genere = genere;
     }
+
     @JsonView(Views.Public.class)
-    public Integer getAny() {
+    public int getAny() {
         return any;
     }
 
-    public void setAny(Integer any) {
+    public void setAny(int any) {
         this.any = any;
     }
+
     @JsonView(Views.Public.class)
     public String getImatge() {
         return imatge;
@@ -94,14 +95,16 @@ public class Canco {
     public void setImatge(String imatge) {
         this.imatge = imatge;
     }
+
     @JsonView(Views.Public.class)
-    public Integer getReproduccions() {
+    public int getReproduccions() {
         return reproduccions;
     }
 
-    public void setReproduccions(Integer reproduccions) {
+    public void setReproduccions(int reproduccions) {
         this.reproduccions = reproduccions;
     }
+
     @JsonView(Views.Public.class)
     public Double getValoracio() {
         return valoracio;
@@ -110,6 +113,7 @@ public class Canco {
     public void setValoracio(Double valoracio) {
         this.valoracio = valoracio;
     }
+
     @JsonView(Views.Public.class)
     public Artista getArtista() {
         return artista;

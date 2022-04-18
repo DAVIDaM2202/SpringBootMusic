@@ -28,7 +28,7 @@ public class Artista {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
     Set<Album> albums = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "canco")
     Set<Canco> cancons = new HashSet<>();
 
     //Constructors
