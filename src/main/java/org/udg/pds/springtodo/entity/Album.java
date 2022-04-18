@@ -14,6 +14,9 @@ public class Album {
     @NotNull
     private String titol;
 
+    @NotNull
+    private String nomArtista;
+
     private String imatge;
 
     private String descripcio;
@@ -30,13 +33,14 @@ public class Album {
         this.imatge = imatge;
         this.descripcio = descripcio;
         this.artista = artista;
+        this.nomArtista = artista.getJoComUsuari().getNomUsuari();
     };
 
     /**
      * GETTERS
      * */
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public Long getIdAlbum() {
         return idAlbum;
     }
@@ -56,6 +60,9 @@ public class Album {
         return descripcio;
     }
 
+    @JsonView(Views.Public.class)
+    public String getNomArtista() {return nomArtista; }
+
     /**
      * SETTERS
      * */
@@ -71,4 +78,6 @@ public class Album {
     public void setDescripcio(String novaDescripcio){
         this.descripcio = novaDescripcio;
     }
+
+    public void setNomArtista(String nomArtista){this.nomArtista = nomArtista;}
 }

@@ -34,13 +34,14 @@ public class AlbumController extends BaseController {
     }
 
     @PostMapping("")
-    public void addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
+    public Album addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
         Long id = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(id);
 
         Album album = new Album(newAlbum.titol, newAlbum.imatge, newAlbum.descripcio, artista);
         albumService.guardarAlbum(album);
+        return album;
     }
 
     @GetMapping("/{id}")
@@ -51,7 +52,7 @@ public class AlbumController extends BaseController {
     }
 
     @PutMapping( "/{id}")
-    public void modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
+    public Album modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -67,12 +68,13 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+            return album;
         }else
             throw new ServiceException("Aquest album no forma part del artista");
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
+    public String deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -81,6 +83,7 @@ public class AlbumController extends BaseController {
 
         if(albumService.buscarAlbumPerArtista(artista).contains(album)){
             albumService.esborrarAlbum(album);
+            return "ok";
         }else
             throw new ServiceException("Aquest album no forma part del artista");
     }
@@ -97,6 +100,15 @@ public class AlbumController extends BaseController {
     public Collection<Album> getAllAlbumsByArtista(HttpSession httpSession, @PathVariable("id") Long idArtista){
         comprovarLogejat(httpSession);
         Artista artista = artistaService.obtenirPerId(idArtista);
+        return albumService.buscarAlbumPerArtista(artista);
+    }
+
+    @GetMapping("/artista/me")
+    @JsonView(Views.Public.class)
+    public Collection<Album> getmyAlbums(HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        Long loggedUserId=obtenirSessioUsuari(httpSession);
+        Artista artista = artistaService.obtenirPerUsuariId(loggedUserId);
         return albumService.buscarAlbumPerArtista(artista);
     }
 
