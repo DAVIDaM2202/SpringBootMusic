@@ -2,6 +2,8 @@ package org.udg.pds.springtodo.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Usuari;
@@ -86,8 +88,11 @@ public class UsuariService {
         return usuariRepository.buscarPerCorreu(email).isEmpty();
     }
 
-    public List<Usuari> getAll(){return usuariRepository.findAll();}
-
-
-
+    public List<Usuari> obtenirUsuarisPerNom(String cadena){
+        Pageable loadSix = PageRequest.of(0, 6);
+        return usuariRepository.getAllByNomUsuariContains(cadena,loadSix);
+    }
+    public List<Usuari> obtenirTots(){
+        return usuariRepository.findAll();
+    }
 }

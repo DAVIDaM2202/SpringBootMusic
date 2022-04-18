@@ -26,8 +26,8 @@ public class UsuariController extends BaseController {
     ArtistaService artistaService;
 
     @GetMapping
-    public List<Usuari> getAllUsers(HttpSession session){
-        return usuariService.getAll();
+    public Collection<Usuari> getAllUsers(HttpSession session){
+        return usuariService.obtenirTots();
     }
     //Ens retorna els camps del usuari
     @GetMapping("/profile")
@@ -35,6 +35,20 @@ public class UsuariController extends BaseController {
     public Usuari getUserById(HttpSession session){
         Long loggedUserId=obtenirSessioUsuari(session);
         return usuariService.getUser(loggedUserId);
+    }
+    @GetMapping("/profile/{id}")
+    @JsonView(Views.Public.class)
+    public Usuari getProfileById(HttpSession session,@PathVariable("id") Long userId){
+        obtenirSessioUsuari(session);
+        return usuariService.getUser(userId);
+    }
+
+
+
+    @GetMapping("/me")
+    @JsonView(Views.Public.class)
+    public Usuari GetMe(HttpSession session){
+        return usuariService.getUser(obtenirSessioUsuari(session));
     }
     //Actualitzem els camps que ens interesin entre username,email, descripcio
     @PutMapping(path = "/update")
@@ -61,7 +75,9 @@ public class UsuariController extends BaseController {
             }
         }
         user.setDescription(ru.description);
-        //user.setImage(ru.image);
+        if(ru.image!=null){
+            user.setImage(ru.image);
+        }
         usuariService.updateUser(user);
         return user;
     }
@@ -70,6 +86,13 @@ public class UsuariController extends BaseController {
     public String checkLoggedIn(HttpSession session) {
         obtenirSessioUsuari(session);
         return BaseController.OK_MESSAGE;
+    }
+
+    @GetMapping(path = "/search/{cadena}")
+    @JsonView(Views.Public.class)
+    public List<Usuari> getSearchedUsers(HttpSession session,@PathVariable("cadena") String cadena){
+        comprovarLogejat(session);
+        return usuariService.obtenirUsuarisPerNom(cadena);
     }
 
     @PostMapping(path="/login")
@@ -101,7 +124,7 @@ public class UsuariController extends BaseController {
             }
             //Guardar usuari i artista si fos el cas
             else {
-                Usuari u = new Usuari(ru.username,ru.email,ru.password);
+                Usuari u = new Usuari(ru.username,ru.email,ru.password,"http://localhost:8080/images/anonim.JPG");
                 usuariService.guardarUsuari(u);
                 if(ru.artist){
                     Artista a = new Artista(u);
