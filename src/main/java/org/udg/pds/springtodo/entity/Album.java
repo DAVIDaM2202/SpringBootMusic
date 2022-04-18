@@ -1,9 +1,12 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name="album")
 public class Album {
@@ -24,7 +27,8 @@ public class Album {
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
-    // TODO: Falta el OneToMany de Cançó però encara no està creat
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    private List<Canco> cancons;
 
     public Album(){};
 
@@ -34,6 +38,7 @@ public class Album {
         this.descripcio = descripcio;
         this.artista = artista;
         this.nomArtista = artista.getJoComUsuari();
+        this.cancons = new ArrayList<>();
     };
 
     /**
@@ -68,6 +73,12 @@ public class Album {
     @JsonView(Views.Public.class)
     public String getNomArtista() {return nomArtista; }
 
+    @JsonView(Views.Public.class)
+    public List<Canco> getCancons() {return cancons;}
+
+    @JsonIgnore
+    public Canco getCancoAlbum(int posicio) {return cancons.get(posicio);}
+
     /**
      * SETTERS
      * */
@@ -88,4 +99,9 @@ public class Album {
         this.artista = artista;
     }
 
+    public void setNomArtista(String nomArtista){this.nomArtista = nomArtista;}
+
+    public void setCancons(List<Canco> cancons){this.cancons = cancons;}
+
+    public void setCancoAlbum(Canco canco){this.cancons.add(canco);}
 }
