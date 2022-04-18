@@ -69,7 +69,7 @@ public class Usuari implements Serializable {
 
     //Getters i setters
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public Long getId() {
         return id;
     }

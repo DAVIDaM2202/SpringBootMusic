@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
-import org.udg.pds.springtodo.entity.Album;
-import org.udg.pds.springtodo.entity.Artista;
-import org.udg.pds.springtodo.entity.Usuari;
-import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.entity.*;
 import org.udg.pds.springtodo.service.AlbumService;
 import org.udg.pds.springtodo.service.ArtistaService;
 
@@ -44,6 +41,15 @@ public class AlbumController extends BaseController {
         return album;
     }
 
+    @PostMapping("/{id}")
+    public Album addCancoAlbum(HttpSession httpSession, @PathVariable("id") Long id, @RequestBody Canco canco){
+        comprovarLogejat(httpSession);
+        Album album = albumService.obtenirAlbumPerId(id);
+        album.setCancoAlbum(canco);
+        albumService.guardarAlbum(album);
+        return album;
+    }
+
     @GetMapping("/{id}")
     @JsonView(Views.Public.class)
     public Album getAlbumById(HttpSession httpSession, @PathVariable("id") Long id){
@@ -74,7 +80,7 @@ public class AlbumController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
+    public Album deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -83,9 +89,9 @@ public class AlbumController extends BaseController {
 
         if(albumService.buscarAlbumPerArtista(artista).contains(album)){
             albumService.esborrarAlbum(album);
-            return "ok";
+            return album;
         }else
-            throw new ServiceException("Aquest album no forma part del artista");
+            throw new ServiceException("Aquest album no existeix");
     }
 
     @GetMapping("/titol/{titol}")
