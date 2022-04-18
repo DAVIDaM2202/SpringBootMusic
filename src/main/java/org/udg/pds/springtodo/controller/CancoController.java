@@ -106,6 +106,8 @@ public class CancoController extends BaseController {
         return cancoService.buscarCancoPerArtista(artista);
     }
 
+
+
     @GetMapping(path = "/search/{cadena}")
     @JsonView(Views.Public.class)
     public List<Canco> getSearchedSongs(HttpSession session, @PathVariable("cadena") String cadena){

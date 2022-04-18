@@ -34,13 +34,14 @@ public class AlbumController extends BaseController {
     }
 
     @PostMapping("")
-    public void addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
+    public Album addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
         Long id = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(id);
 
         Album album = new Album(newAlbum.titol, newAlbum.imatge, newAlbum.descripcio, artista);
-        albumService.guardarAlbum(album);
+         albumService.guardarAlbum(album);
+         return album;
     }
 
     @GetMapping("/{id}")
@@ -97,6 +98,15 @@ public class AlbumController extends BaseController {
     public Collection<Album> getAllAlbumsByArtista(HttpSession httpSession, @PathVariable("id") Long idArtista){
         comprovarLogejat(httpSession);
         Artista artista = artistaService.obtenirPerId(idArtista);
+        return albumService.buscarAlbumPerArtista(artista);
+    }
+
+    @GetMapping("/artista/me")
+    @JsonView(Views.Public.class)
+    public Collection<Album> getmyAlbums(HttpSession httpSession){
+        comprovarLogejat(httpSession);
+        Long loggedUserId=obtenirSessioUsuari(httpSession);
+        Artista artista = artistaService.obtenirPerUsuariId(loggedUserId);
         return albumService.buscarAlbumPerArtista(artista);
     }
 
