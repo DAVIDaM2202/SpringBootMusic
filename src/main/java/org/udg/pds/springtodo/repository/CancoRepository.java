@@ -18,7 +18,7 @@ public interface CancoRepository extends JpaRepository<Canco,Long> {
 
     List<Canco> findAllByNomCanco(String nomCanco);
 
-    Page<Canco> findAllByGenereOrderByReproduccionsDesc(Pageable pageRequest, String genere);
+    Page<Canco> findAllByGenere(Pageable pageRequest, String genere);
 
     List<Canco> getAllByNomCancoContains(String cadena, Pageable loadSix);
 

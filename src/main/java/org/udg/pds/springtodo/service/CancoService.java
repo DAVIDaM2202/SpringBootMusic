@@ -49,7 +49,7 @@ public class CancoService {
     }
 
     public Page<Canco> getSongsByGenre(int offset, int pageSize, String genre){
-        return cancoRepository.findAllByGenereOrderByReproduccionsDesc(PageRequest.of(offset,pageSize),genre);
+        return cancoRepository.findAllByGenere(PageRequest.of(offset,pageSize),genre);
     }
 
     public CancoRepository crud() {
