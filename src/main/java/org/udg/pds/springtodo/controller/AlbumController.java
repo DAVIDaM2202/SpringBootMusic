@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
-import org.udg.pds.springtodo.entity.Album;
-import org.udg.pds.springtodo.entity.Artista;
-import org.udg.pds.springtodo.entity.Usuari;
-import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.entity.*;
 import org.udg.pds.springtodo.service.AlbumService;
 import org.udg.pds.springtodo.service.ArtistaService;
 
@@ -40,8 +37,17 @@ public class AlbumController extends BaseController {
         Artista artista = artistaService.obtenirPerUsuariId(id);
 
         Album album = new Album(newAlbum.titol, newAlbum.imatge, newAlbum.descripcio, artista);
-         albumService.guardarAlbum(album);
-         return album;
+        albumService.guardarAlbum(album);
+        return album;
+    }
+
+    @PostMapping("/{id}")
+    public Album addCancoAlbum(HttpSession httpSession, @PathVariable("id") Long id, @RequestBody Canco canco){
+        comprovarLogejat(httpSession);
+        Album album = albumService.obtenirAlbumPerId(id);
+        album.setCancoAlbum(canco);
+        albumService.guardarAlbum(album);
+        return album;
     }
 
     @GetMapping("/{id}")
@@ -52,7 +58,7 @@ public class AlbumController extends BaseController {
     }
 
     @PutMapping( "/{id}")
-    public void modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
+    public Album modifyAlbum(HttpSession httpSession, @PathVariable("id") Long id, @Valid @RequestBody UpdateAlbum albumUpdate){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -68,12 +74,13 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+            return album;
         }else
             throw new ServiceException("Aquest album no forma part del artista");
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
+    public Album deleteAlbum(HttpSession httpSession, @PathVariable("id") Long id){
         Long idUsuari = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(idUsuari);
@@ -82,8 +89,9 @@ public class AlbumController extends BaseController {
 
         if(albumService.buscarAlbumPerArtista(artista).contains(album)){
             albumService.esborrarAlbum(album);
+            return album;
         }else
-            throw new ServiceException("Aquest album no forma part del artista");
+            throw new ServiceException("Aquest album no existeix");
     }
 
     @GetMapping("/titol/{titol}")
