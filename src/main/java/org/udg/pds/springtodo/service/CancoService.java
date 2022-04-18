@@ -1,6 +1,7 @@
 package org.udg.pds.springtodo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,9 @@ public class CancoService {
         return cancoRepository.findAllByNomCanco(nameCanco);
     }
 
+    public Page<Canco> getSongsByGenre(int offset, int pageSize, String genre){
+        return cancoRepository.findAllByGenereOrderByReproduccionsDesc(PageRequest.of(offset,pageSize),genre);
+    }
 
     public CancoRepository crud() {
         return cancoRepository;
