@@ -35,13 +35,16 @@ public class CancoController extends BaseController {
     }
 
     @PostMapping
-    public Canco crearCanco(HttpSession session,@RequestBody afegirCanco canco){
+
+
+    public Canco crearCanco(HttpSession session,@RequestBody Canco canco){
         comprovarLogejat(session);
+
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
         if (u.getJoComArtista()!=null){
             Artista a = artistaService.obtenirPerUsuariId(id);
-            Canco c = new Canco(canco.nomCanco,canco.genere,canco.any,canco.imatge,a);
+            Canco c = new Canco(canco.getNomCanco(),canco.getGenere(),canco.getAny(),canco.getImatge(), canco.getAlbum(),a);
             return cancoService.guardarCanco(c);
         }else {
             throw new ServiceException("No ets un artista");
@@ -74,7 +77,7 @@ public class CancoController extends BaseController {
                 canco.setNomCanco(cancoUpdate.nomCanco);
             if(cancoUpdate.imatge != null)
                 canco.setImatge(cancoUpdate.imatge);
-            if(cancoUpdate.any != null)
+            if(cancoUpdate.any != 0)
                 canco.setAny(cancoUpdate.any);
             if(cancoUpdate.genere != null)
                 canco.setGenere(cancoUpdate.genere);
@@ -132,18 +135,12 @@ public class CancoController extends BaseController {
         return cancoService.buscarCancoPerArtista(artista);
     }
 
-
     static class UpdateCanco {
         public String nomCanco;
         public String genere;
-        public Integer any;
+        public int any;
         public String imatge;
     }
 
-    static class afegirCanco{
-        public String nomCanco;
-        public String genere;
-        public Integer any;
-        public String imatge;
-    }
+
 }

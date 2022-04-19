@@ -1,11 +1,16 @@
 package org.udg.pds.springtodo.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "canco")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "idCanco", scope = Canco.class)
 public class Canco {
 
     //Atributs
@@ -20,31 +25,36 @@ public class Canco {
     private String genere;
 
     @NotNull
-    private Integer any;
+    private int any;
 
     private String imatge;
 
-    private Integer reproduccions;
+    private int reproduccions;
 
     private Double valoracio;
 
     //relacions
-
+    @JoinColumn(name="artista")
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="album")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Album album;
 
-    /*@ManyToMany (mappedBy = "cancons")
-    @JoinTable(name = "cancons_playlist", joinColumns = @JoinColumn(name = "idCanco"), inverseJoinColumns = @JoinColumn(name = "idPlaylist"))
-    Set<Playlist> playslists=new HashSet<>();*/
-
     //Constructors
-    public Canco(){}
+    public Canco(){};
 
-    public Canco(String nomCanco, String genere, Integer any, String imatge, Artista artista) {
+    public Canco(String nomCanco, String genere, int any, String imatge, Album album, Artista a) {
+        this.nomCanco = nomCanco;
+        this.genere = genere;
+        this.any = any;
+        this.imatge = imatge;
+        this.artista = a;
+        this.album = album;
+    }
+
+    public Canco(String nomCanco, String genere, int any, String imatge, Artista artista) {
         this.nomCanco = nomCanco;
         this.genere = genere;
         this.any = any;
@@ -52,7 +62,6 @@ public class Canco {
         this.artista = artista;
         this.album = null;
     }
-
 
     public Canco(String nomCanco, String genere, Integer any, String imatge, Artista artista,Album album) {
         this.nomCanco = nomCanco;
@@ -72,6 +81,7 @@ public class Canco {
     public void setIdCanco(Long idCanco) {
         this.idCanco = idCanco;
     }
+
     @JsonView(Views.Public.class)
     public String getNomCanco() {
         return nomCanco;
@@ -80,6 +90,7 @@ public class Canco {
     public void setNomCanco(String nomCanco) {
         this.nomCanco = nomCanco;
     }
+
     @JsonView(Views.Public.class)
     public String getGenere() {
         return genere;
@@ -88,14 +99,16 @@ public class Canco {
     public void setGenere(String genere) {
         this.genere = genere;
     }
+
     @JsonView(Views.Public.class)
-    public Integer getAny() {
+    public int getAny() {
         return any;
     }
 
-    public void setAny(Integer any) {
+    public void setAny(int any) {
         this.any = any;
     }
+
     @JsonView(Views.Public.class)
     public String getImatge() {
         return imatge;
@@ -104,14 +117,16 @@ public class Canco {
     public void setImatge(String imatge) {
         this.imatge = imatge;
     }
+
     @JsonView(Views.Public.class)
-    public Integer getReproduccions() {
+    public int getReproduccions() {
         return reproduccions;
     }
 
-    public void setReproduccions(Integer reproduccions) {
+    public void setReproduccions(int reproduccions) {
         this.reproduccions = reproduccions;
     }
+
     @JsonView(Views.Public.class)
     public Double getValoracio() {
         return valoracio;
@@ -120,6 +135,7 @@ public class Canco {
     public void setValoracio(Double valoracio) {
         this.valoracio = valoracio;
     }
+
     @JsonView(Views.Public.class)
     public Artista getArtista() {
         return artista;
@@ -129,7 +145,8 @@ public class Canco {
         this.artista = artista;
     }
 
-    @JsonIgnore
+
+    @JsonView(Views.Public.class)
     public Album getAlbum(){
         return album;
     }

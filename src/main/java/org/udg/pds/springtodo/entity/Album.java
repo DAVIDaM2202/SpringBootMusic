@@ -1,7 +1,9 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="album")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "idAlbum", scope = Album.class)
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,6 @@ public class Album {
 
     private String descripcio;
 
-    @NotNull
     private String nomArtista;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -37,7 +40,7 @@ public class Album {
         this.imatge = imatge;
         this.descripcio = descripcio;
         this.artista = artista;
-        this.nomArtista = artista.getJoComUsuari();
+        this.nomArtista = null;
         this.cancons = new ArrayList<>();
     };
 
