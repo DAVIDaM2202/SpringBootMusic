@@ -74,6 +74,7 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+
             return album;
         }else
             throw new ServiceException("Aquest album no forma part del artista");
