@@ -95,8 +95,4 @@ public class UsuariService {
     public List<Usuari> obtenirTots(){
         return usuariRepository.findAll();
     }
-
-
-
-
 }

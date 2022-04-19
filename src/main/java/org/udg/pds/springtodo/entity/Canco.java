@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -128,6 +129,7 @@ public class Canco {
         this.artista = artista;
     }
 
+    @JsonIgnore
     public Album getAlbum(){
         return album;
     }
