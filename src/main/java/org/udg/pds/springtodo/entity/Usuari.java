@@ -1,7 +1,9 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "usuaris")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id", scope = Usuari.class)
 public class Usuari implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,8 +42,7 @@ public class Usuari implements Serializable {
 
     //Relacions
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "joComUsuari")
+    @OneToOne(mappedBy = "joComUsuari", cascade = CascadeType.ALL)
     private Artista joComArtista; //pot ser Null
 
 

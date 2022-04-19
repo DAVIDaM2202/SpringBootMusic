@@ -1,7 +1,9 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name="artistes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "idArtista", scope = Artista.class)
 public class Artista {
     //Atributs
     @Id
@@ -21,17 +25,18 @@ public class Artista {
     //Relacions
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
 
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista", orphanRemoval = true)
     Set<Album> albums = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista", orphanRemoval = true)
     Set<Canco> cancons = new HashSet<>();
+
+
 
     //Constructors
 
@@ -64,8 +69,8 @@ public class Artista {
         this.notificacionsComentaris = notificacionsComentaris;
     }
     @JsonView(Views.Public.class)
-    public String getJoComUsuari() {
-        return joComUsuari.getNomUsuari();
+    public Usuari getJoComUsuari() {
+        return joComUsuari;
     }
 
     public void setJoComUsuari(Usuari joComUsuari) {

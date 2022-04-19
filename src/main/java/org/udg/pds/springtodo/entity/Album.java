@@ -28,10 +28,11 @@ public class Album {
     @NotNull
     private String nomArtista;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "artista_id")
     private Artista artista;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
     private List<Canco> cancons;
 
     public Album(){};
