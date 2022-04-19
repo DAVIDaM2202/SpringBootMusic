@@ -34,13 +34,13 @@ public class CancoController extends BaseController {
     }
 
     @PostMapping
-    public Canco crearCanco(HttpSession session,@RequestBody afegirCanco canco){
+    public Canco crearCanco(HttpSession session,@RequestBody Canco canco){
 
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
         if (u.getJoComArtista()!=null){
             Artista a = artistaService.obtenirPerUsuariId(id);
-            Canco c = new Canco(canco.nomCanco,canco.genere,canco.any,canco.imatge, canco.album,a);
+            Canco c = new Canco(canco.getNomCanco(),canco.getGenere(),canco.getAny(),canco.getImatge(), canco.getAlbum(),a);
             return cancoService.guardarCanco(c);
         }else {
             throw new ServiceException("No ets un artista");
@@ -125,7 +125,6 @@ public class CancoController extends BaseController {
         return cancoService.buscarCancoPerArtista(artista);
     }
 
-
     static class UpdateCanco {
         public String nomCanco;
         public String genere;
@@ -133,12 +132,5 @@ public class CancoController extends BaseController {
         public String imatge;
     }
 
-    static class afegirCanco{
-        public String nomCanco;
-        public String genere;
-        public int any;
-        public Artista artista;
-        public Album album;
-        public String imatge;
-    }
+
 }

@@ -1,10 +1,15 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "canco")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "idCanco", scope = Canco.class)
 public class Canco {
 
     //Atributs
@@ -28,32 +33,23 @@ public class Canco {
     private Double valoracio;
 
     //relacions
-
+    @JoinColumn(name="artista")
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
-
-
 
     @JoinColumn(name="album")
     @ManyToOne(fetch = FetchType.EAGER)
     private Album album;
 
-    /*@ManyToMany (mappedBy = "cancons")
-    @JoinTable(name = "cancons_playlist", joinColumns = @JoinColumn(name = "idCanco"), inverseJoinColumns = @JoinColumn(name = "idPlaylist"))
-    Set<Playlist> playslists=new HashSet<>();*/
-
     //Constructors
     public Canco(){};
 
-    public Canco(String nomCanco, String genere, int any, String imatge, Album album, Artista a){}
-
-    //public Canco(String nomCanco, String genere, int any, String imatge, Artista artista) {
-    public Canco(String nomCanco, String genere, int any, Artista artista, Album album) {
+    public Canco(String nomCanco, String genere, int any, String imatge, Album album, Artista a) {
         this.nomCanco = nomCanco;
         this.genere = genere;
         this.any = any;
         this.imatge = imatge;
-        this.artista = artista;
+        this.artista = a;
         this.album = album;
     }
 
@@ -65,6 +61,7 @@ public class Canco {
         this.artista = artista;
         this.album = null;
     }
+
 
     //Getters i setters
     @JsonView(Views.Public.class)
@@ -139,6 +136,7 @@ public class Canco {
         this.artista = artista;
     }
 
+    @JsonView(Views.Public.class)
     public Album getAlbum(){
         return album;
     }

@@ -1,7 +1,9 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name="artistes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "idArtista", scope = Artista.class)
 public class Artista {
     //Atributs
     @Id
@@ -19,7 +23,6 @@ public class Artista {
     private Boolean notificacionsComentaris;
 
     //Relacions
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
@@ -30,8 +33,10 @@ public class Artista {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
     Set<Album> albums = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "canco")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
     Set<Canco> cancons = new HashSet<>();
+
+
 
     //Constructors
 
