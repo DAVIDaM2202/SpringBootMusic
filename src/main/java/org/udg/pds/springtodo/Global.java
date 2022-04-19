@@ -159,7 +159,7 @@ public class Global {
             Album album4 = new Album("YHLQMDLG","http://localhost:8080/images/yhlqmdlg.JPG","",artista3);
 
             Album album5 = new Album("All Eyez On Me","http://localhost:8080/images/allEyezOnMe.JPG","",artista4);
-            Album album6 = new Album("Me Againts The World","http://localhost:8080/images/meAgaintsTheWorld.JPG","",artista4);
+            Album album6 = new Album("Me Against The World","http://localhost:8080/images/meAgainstTheWorld.JPG","",artista4);
 
             Album album7 = new Album("Ready to Die","http://localhost:8080/images/readyToDie.JPG","",artista5);
             Album album8 = new Album("Life After Death","http://localhost:8080/images/lifeAfterDeath.JPG","",artista5);
@@ -180,13 +180,13 @@ public class Global {
 
             //CREACIO DE CANCONS D'ALBUMS
 
-            Canco canco1 = new Canco("Without Me","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2);
-            Canco canco2 = new Canco("Soldier","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2);
-            Canco canco3 = new Canco("Superman","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2);
+            Canco canco1 = new Canco("Without Me","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2,album1);
+            Canco canco2 = new Canco("Soldier","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2,album1);
+            Canco canco3 = new Canco("Superman","Hip Hop",2002,"http://localhost:8080/images/eminemShow.JPG",artista2,album1);
 
-            Canco canco4 = new Canco("Godzilla (feat.Juice WRLD)","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
-            Canco canco5 = new Canco("Stepdad","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
-            Canco canco6 = new Canco("Farewell","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurder.JPG",artista2);
+            Canco canco4 = new Canco("Godzilla (feat.Juice WRLD)","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2,album2);
+            Canco canco5 = new Canco("Stepdad","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2,album2);
+            Canco canco6 = new Canco("Farewell","Hip Hop",2020,"http://localhost:8080/images/musicToBeMurdered.JPG",artista2,album2);
 
             Canco canco7 = new Canco("MOJAITA","Reggaeton",2019,"http://localhost:8080/images/oasis.JPG",artista3);
             Canco canco8 = new Canco("ODIO","Reggaeton",2019,"http://localhost:8080/images/oasis.JPG",artista3);
@@ -196,29 +196,29 @@ public class Global {
             Canco canco11 = new Canco("La Difícil","Reggaeton",2020,"http://localhost:8080/images/yhlqmdlg.JPG",artista3);
             Canco canco12 = new Canco("Safaera","Reggaeton",2020,"http://localhost:8080/images/yhlqmdlg.JPG",artista3);
 
-            Canco canco13 = new Canco("Ambitionz Az A Ridah","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4);
-            Canco canco14 = new Canco("Only God Can Judge Me","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4);
-            Canco canco15 = new Canco("Heartz Of Men","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4);
+            Canco canco13 = new Canco("Ambitionz Az A Ridah","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4,album5);
+            Canco canco14 = new Canco("Only God Can Judge Me","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4,album5);
+            Canco canco15 = new Canco("Heartz Of Men","Hip Hop",1996,"http://localhost:8080/images/allEyezOnMe.JPG",artista4,album5);
 
-            Canco canco16 = new Canco("Temptations","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4);
-            Canco canco17 = new Canco("Dear Mama","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4);
-            Canco canco18 = new Canco("It Ain't Easy","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4);
+            Canco canco16 = new Canco("Temptations","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4,album6);
+            Canco canco17 = new Canco("Dear Mama","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4,album6);
+            Canco canco18 = new Canco("It Ain't Easy","Hip Hop",1997,"http://localhost:8080/images/meAgainstTheWorld.JPG",artista4,album6);
 
-            Canco canco19 = new Canco("Gimme the Loot","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5);
-            Canco canco20 = new Canco("Juicy","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5);
-            Canco canco21 = new Canco("Big Poppa","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5);
+            Canco canco19 = new Canco("Gimme the Loot","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5,album7);
+            Canco canco20 = new Canco("Juicy","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5,album7);
+            Canco canco21 = new Canco("Big Poppa","Hip Hop",1994,"http://localhost:8080/images/readyToDie.JPG",artista5,album7);
 
-            Canco canco22 = new Canco("Hypnotize","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5);
-            Canco canco23 = new Canco("I Got a Story to Tell","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5);
-            Canco canco24 = new Canco("Miss U","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5);
+            Canco canco22 = new Canco("Hypnotize","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5,album8);
+            Canco canco23 = new Canco("I Got a Story to Tell","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5,album8);
+            Canco canco24 = new Canco("Miss U","Hip Hop",1997,"http://localhost:8080/images/lifeAfterDeath.JPG",artista5,album8);
 
-            Canco canco25 = new Canco("Shivers","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6);
-            Canco canco26 = new Canco("Bad Habits","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6);
-            Canco canco27 = new Canco("Sandman","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6);
+            Canco canco25 = new Canco("Shivers","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6,album9);
+            Canco canco26 = new Canco("Bad Habits","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6,album9);
+            Canco canco27 = new Canco("Sandman","Pop",2021,"http://localhost:8080/images/equal.JPG",artista6,album9);
 
-            Canco canco28 = new Canco("Happier","Pop",2017,"http://localhost:8080/images/x.JPG",artista6);
-            Canco canco29 = new Canco("Perfect","Pop",2017,"http://localhost:8080/images/x.JPG",artista6);
-            Canco canco30 = new Canco("Nancy Mulligan","Pop",2017,"http://localhost:8080/images/x.JPG",artista6);
+            Canco canco28 = new Canco("Happier","Pop",2017,"http://localhost:8080/images/x.JPG",artista6,album10);
+            Canco canco29 = new Canco("Perfect","Pop",2017,"http://localhost:8080/images/x.JPG",artista6,album10);
+            Canco canco30 = new Canco("Nancy Mulligan","Pop",2017,"http://localhost:8080/images/x.JPG",artista6,album10);
 
 
             //CREACIÓ SINGLES

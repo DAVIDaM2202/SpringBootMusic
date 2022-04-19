@@ -42,6 +42,7 @@ public class Usuari implements Serializable {
     @OneToOne(mappedBy = "joComUsuari")
     private Artista joComArtista; //pot ser Null
 
+
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "usuari_segueix_artista", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
     Set<Artista> following=new HashSet<>();
@@ -69,7 +70,7 @@ public class Usuari implements Serializable {
 
     //Getters i setters
 
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Public.class)
     public Long getId() {
         return id;
     }

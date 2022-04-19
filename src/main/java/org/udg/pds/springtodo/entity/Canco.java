@@ -32,15 +32,13 @@ public class Canco {
     @ManyToOne(fetch = FetchType.EAGER)
     private Artista artista;
 
-    /*
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="album")
     private Album album;
 
-    @ManyToMany (mappedBy = "cancons")
+    /*@ManyToMany (mappedBy = "cancons")
     @JoinTable(name = "cancons_playlist", joinColumns = @JoinColumn(name = "idCanco"), inverseJoinColumns = @JoinColumn(name = "idPlaylist"))
-    Set<Playlist> playslists=new HashSet<>();
-    */
+    Set<Playlist> playslists=new HashSet<>();*/
 
     //Constructors
     public Canco(){}
@@ -51,6 +49,17 @@ public class Canco {
         this.any = any;
         this.imatge = imatge;
         this.artista = artista;
+        this.album = null;
+    }
+
+
+    public Canco(String nomCanco, String genere, Integer any, String imatge, Artista artista,Album album) {
+        this.nomCanco = nomCanco;
+        this.genere = genere;
+        this.any = any;
+        this.imatge = imatge;
+        this.artista = artista;
+        this.album = album;
     }
 
     //Getters i setters
@@ -117,5 +126,13 @@ public class Canco {
 
     public void setArtista(Artista artista) {
         this.artista = artista;
+    }
+
+    public Album getAlbum(){
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 }
