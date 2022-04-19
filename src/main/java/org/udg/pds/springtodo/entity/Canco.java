@@ -1,9 +1,10 @@
 package org.udg.pds.springtodo.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -62,6 +63,14 @@ public class Canco {
         this.album = null;
     }
 
+    public Canco(String nomCanco, String genere, Integer any, String imatge, Artista artista,Album album) {
+        this.nomCanco = nomCanco;
+        this.genere = genere;
+        this.any = any;
+        this.imatge = imatge;
+        this.artista = artista;
+        this.album = album;
+    }
 
     //Getters i setters
     @JsonView(Views.Public.class)
@@ -135,6 +144,7 @@ public class Canco {
     public void setArtista(Artista artista) {
         this.artista = artista;
     }
+
 
     @JsonView(Views.Public.class)
     public Album getAlbum(){

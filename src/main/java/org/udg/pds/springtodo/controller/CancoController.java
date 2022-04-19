@@ -2,6 +2,7 @@ package org.udg.pds.springtodo.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.*;
@@ -34,7 +35,10 @@ public class CancoController extends BaseController {
     }
 
     @PostMapping
+
+
     public Canco crearCanco(HttpSession session,@RequestBody Canco canco){
+        comprovarLogejat(session);
 
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
@@ -52,6 +56,12 @@ public class CancoController extends BaseController {
     public Canco getCancoById(HttpSession httpSession, @PathVariable("id") Long id){
         comprovarLogejat(httpSession);
         return cancoService.obtenirCancoById(id);
+    }
+
+    @GetMapping("/pagination/{genre}/{offset}/{pageSize}")
+    public List<Canco> getCanconsByGenere(HttpSession httpSession, @PathVariable("offset") int offset, @PathVariable("pageSize") int pageSize, @PathVariable("genre") String genre){
+        comprovarLogejat(httpSession);
+        return cancoService.getSongsByGenre(offset,pageSize,genre).getContent();
     }
 
     @PutMapping( "/{id}")
