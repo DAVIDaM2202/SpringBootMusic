@@ -6,12 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.*;
+import org.udg.pds.springtodo.service.AlbumService;
 import org.udg.pds.springtodo.service.ArtistaService;
 import org.udg.pds.springtodo.service.CancoService;
 import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class CancoController extends BaseController {
     CancoService cancoService;
     @Autowired
     ArtistaService artistaService;
+
+    @Autowired
+    AlbumService albumService;
     @Autowired
     UsuariService usuariService;
 
@@ -37,14 +42,17 @@ public class CancoController extends BaseController {
     @PostMapping
 
 
-    public Canco crearCanco(HttpSession session,@RequestBody Canco canco){
+    public Canco crearCanco(HttpSession session,@RequestBody AddCanco canco){
         comprovarLogejat(session);
 
         Long id = obtenirSessioUsuari(session);
         Usuari u = usuariService.getUser(id);
         if (u.getJoComArtista()!=null){
-            Artista a = artistaService.obtenirPerUsuariId(id);
-            Canco c = new Canco(canco.getNomCanco(),canco.getGenere(),canco.getAny(),canco.getImatge(), canco.getAlbum(),a);
+            Canco c = new Canco(canco.nomCanco,canco.genere,canco.any, canco.imatge,u.getJoComArtista());
+            if (canco.idAlbum != null){
+                Album album = albumService.obtenirAlbumPerId(canco.idAlbum);
+                c.setAlbum(album);
+            }
             return cancoService.guardarCanco(c);
         }else {
             throw new ServiceException("No ets un artista");
@@ -140,6 +148,23 @@ public class CancoController extends BaseController {
         public String genere;
         public int any;
         public String imatge;
+    }
+
+    static class AddCanco {
+        public Long idCanco;
+        @NotNull
+        public String nomCanco;
+        @NotNull
+        public String genere;
+        @NotNull
+        public int any;
+        @NotNull
+        public String imatge;
+        public int reproduccions;
+        public Double valoracio;
+
+        public Artista artista;
+        public Long idAlbum;
     }
 
 
