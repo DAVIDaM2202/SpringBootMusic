@@ -77,8 +77,12 @@ public class Artista {
         this.joComUsuari = joComUsuari;
     }
     @JsonView(Views.Public.class)
-    public Set<Usuari> getFollowers() {
-        return followers;
+    public Set<Long> getFollowers() {
+        Set<Long> idUsers = new HashSet<>();
+        for (Usuari u : followers){
+            idUsers.add(u.getId());
+        }
+        return idUsers;
     }
 
     public void setFollowers(Set<Usuari> followers) {

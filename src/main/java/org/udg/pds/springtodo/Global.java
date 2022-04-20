@@ -21,6 +21,8 @@ import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class Global {
@@ -112,6 +114,7 @@ public class Global {
             Usuari user8 = new Usuari("2pac","2pac@gmail.com","biggie","http://localhost:8080/images/tupac.JPG");
             Usuari user9 = new Usuari("The Notorius B.I.G","biggie@gmail.com","2pac","http://localhost:8080/images/biggie.JPG");
             Usuari user10 = new Usuari("Ed Sheeran","ed@gmail.com","irish","http://localhost:8080/images/sheeran.jpg");
+
 
             userService.guardarUsuari(user1);
             userService.guardarUsuari(user2);

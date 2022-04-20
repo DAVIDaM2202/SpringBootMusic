@@ -8,14 +8,17 @@ import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.service.ArtistaService;
+import org.udg.pds.springtodo.service.UsuariService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path="/artistes")
-public class ArtistaController {
+public class ArtistaController extends BaseController {
     @Autowired
     ArtistaService artistaService;
 

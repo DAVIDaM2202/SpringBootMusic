@@ -13,6 +13,7 @@ import org.udg.pds.springtodo.service.UsuariService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -91,6 +92,13 @@ public class UsuariController extends BaseController {
     public List<Usuari> getSearchedUsers(HttpSession session,@PathVariable("cadena") String cadena){
         comprovarLogejat(session);
         return usuariService.obtenirUsuarisPerNom(cadena);
+    }
+
+    @GetMapping("/me/following")
+    public List<Artista> getArtistsIFollow(HttpSession httpSession){
+        Long idUsuari = obtenirSessioUsuari(httpSession);
+        Usuari me = usuariService.getUser(idUsuari);
+        return new ArrayList<>(me.getFollowing());
     }
 
     @PostMapping(path="/login")

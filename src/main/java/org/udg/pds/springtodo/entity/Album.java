@@ -79,7 +79,13 @@ public class Album {
     public String getNomArtista() {return nomArtista; }
 
     @JsonView(Views.Public.class)
-    public List<Canco> getCancons() {return cancons;}
+    public List<Long> getCancons() {
+        List<Long> idCancons = new ArrayList<>();
+        for (Canco c : cancons){
+            idCancons.add(c.getIdCanco());
+        }
+        return idCancons;
+    }
 
     @JsonIgnore
     public Canco getCancoAlbum(int posicio) {return cancons.get(posicio);}
