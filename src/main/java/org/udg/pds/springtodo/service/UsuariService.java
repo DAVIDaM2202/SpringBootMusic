@@ -6,7 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
+import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
+import org.udg.pds.springtodo.repository.ArtistaRepository;
+import org.udg.pds.springtodo.repository.ArtistaRepository;
 import org.udg.pds.springtodo.repository.UsuariRepository;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class UsuariService {
     @Autowired
     UsuariRepository usuariRepository;
+    ArtistaRepository artistaRepository;
 
     public void guardarUsuari(Usuari u){
         u.setPassword(BCrypt.withDefaults().hashToString(12, u.getPassword().toCharArray()));
@@ -49,6 +53,15 @@ public class UsuariService {
             return uo.get();
         else
             throw new ServiceException(String.format("User with id = % dos not exists", id));
+    }
+
+    public Artista getArtist(Long id) {
+        Optional<Artista> artista = artistaRepository.findById(id);
+
+        if (artista.isPresent())
+            return artista.get();
+        else
+            throw new ServiceException("No existeix l'artista amb aquest identificador.");
     }
 
     //Actualitzem els camps que ens interesin entre username,email, descripcio
@@ -95,4 +108,8 @@ public class UsuariService {
     public List<Usuari> obtenirTots(){
         return usuariRepository.findAll();
     }
+
+
+
+
 }
