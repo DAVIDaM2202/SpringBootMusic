@@ -9,6 +9,7 @@ import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
 import org.udg.pds.springtodo.repository.ArtistaRepository;
+import org.udg.pds.springtodo.repository.ArtistaRepository;
 import org.udg.pds.springtodo.repository.UsuariRepository;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UsuariService {
     @Autowired
     UsuariRepository usuariRepository;
     ArtistaRepository artistaRepository;
+
     public void guardarUsuari(Usuari u){
         u.setPassword(BCrypt.withDefaults().hashToString(12, u.getPassword().toCharArray()));
         usuariRepository.save(u);
@@ -106,8 +108,6 @@ public class UsuariService {
     public List<Usuari> obtenirTots(){
         return usuariRepository.findAll();
     }
-
-
 
 
 

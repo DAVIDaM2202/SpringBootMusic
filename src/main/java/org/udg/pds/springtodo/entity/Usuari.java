@@ -43,9 +43,9 @@ public class Usuari implements Serializable {
 
     //Relacions
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "joComUsuari")
+    @OneToOne(mappedBy = "joComUsuari", cascade = CascadeType.ALL)
     private Artista joComArtista; //pot ser Null
+
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "usuari_segueix_artista", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
