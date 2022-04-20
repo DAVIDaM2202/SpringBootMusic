@@ -1,6 +1,5 @@
 package org.udg.pds.springtodo.controller;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping(path="/usuaris")
 @RestController
@@ -43,8 +43,6 @@ public class UsuariController extends BaseController {
         obtenirSessioUsuari(session);
         return usuariService.getUser(userId);
     }
-
-
 
     @GetMapping("/me")
     @JsonView(Views.Public.class)
@@ -195,6 +193,30 @@ public class UsuariController extends BaseController {
         return null;
     }
 
+    @PutMapping(path = "/follow")
+    private Artista followUser(HttpSession session, @Valid  @RequestBody Follow follow) {
+        Long loggedUserId = obtenirSessioUsuari(session);
+        Usuari me = usuariService.getUser(loggedUserId);
+        Artista artista = artistaService.obtenirPerId(follow.idArtista);
+        Set<Artista> following = me.getFollowing();
+        following.add(artista);
+        me.setFollowing(following);
+        usuariService.updateUser(me);
+        return artista;
+    }
+
+    @PutMapping(path = "/unfollow")
+    private Artista unfollowUser(HttpSession session, @Valid  @RequestBody Follow follow) {
+        Long loggedUserId = obtenirSessioUsuari(session);
+        Usuari me = usuariService.getUser(loggedUserId);
+        Artista artista = artistaService.obtenirPerId(follow.idArtista);
+        Set<Artista> following = me.getFollowing();
+        following.remove(artista);
+        me.setFollowing(following);
+        usuariService.updateUser(me);
+        return artista;
+    }
+
 
     static class LoginUser {
         @NotNull
@@ -243,4 +265,9 @@ public class UsuariController extends BaseController {
         @NotNull
         public Boolean notifications;
     }
+    static class Follow{
+        @NotNull
+        public Long idArtista;
+    }
+
 }
