@@ -25,12 +25,14 @@ public class Album {
 
     private String descripcio;
 
+    @NotNull
     private String nomArtista;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "artista_id")
     private Artista artista;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
     private List<Canco> cancons;
 
     public Album(){};
@@ -40,7 +42,7 @@ public class Album {
         this.imatge = imatge;
         this.descripcio = descripcio;
         this.artista = artista;
-        this.nomArtista = null;
+        this.nomArtista = artista.getJoComUsuari().getNomUsuari();
         this.cancons = new ArrayList<>();
     };
 

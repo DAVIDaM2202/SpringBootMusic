@@ -34,12 +34,12 @@ public class Canco {
     private Double valoracio;
 
     //relacions
-    @JoinColumn(name="artista")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name="artista_id")
     private Artista artista;
 
-    @JoinColumn(name="album")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name="album_id")
     private Album album;
 
     //Constructors

@@ -23,17 +23,17 @@ public class Artista {
     private Boolean notificacionsComentaris;
 
     //Relacions
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name="usuari_artista")
     private Usuari joComUsuari;
 
     @ManyToMany(mappedBy = "following")
     Set<Usuari> followers=new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista", orphanRemoval = true)
     Set<Album> albums = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artista", orphanRemoval = true)
     Set<Canco> cancons = new HashSet<>();
 
 
@@ -69,8 +69,8 @@ public class Artista {
         this.notificacionsComentaris = notificacionsComentaris;
     }
     @JsonView(Views.Public.class)
-    public String getJoComUsuari() {
-        return joComUsuari.getNomUsuari();
+    public Usuari getJoComUsuari() {
+        return joComUsuari;
     }
 
     public void setJoComUsuari(Usuari joComUsuari) {

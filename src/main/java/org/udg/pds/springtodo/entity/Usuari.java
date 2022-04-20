@@ -42,7 +42,7 @@ public class Usuari implements Serializable {
 
     //Relacions
 
-    @OneToOne(mappedBy = "joComUsuari")
+    @OneToOne(mappedBy = "joComUsuari", cascade = CascadeType.ALL)
     private Artista joComArtista; //pot ser Null
 
 

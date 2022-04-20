@@ -31,14 +31,14 @@ public class AlbumController extends BaseController {
     }
 
     @PostMapping("")
-    public Album addNewAlbum(HttpSession httpSession, @RequestBody NewAlbum newAlbum){
+    public Album addNewAlbum(HttpSession httpSession, @RequestBody Album album){
         Long id = obtenirSessioUsuari(httpSession);
 
         Artista artista = artistaService.obtenirPerUsuariId(id);
 
-        Album album = new Album(newAlbum.titol, newAlbum.imatge, newAlbum.descripcio, artista);
-        albumService.guardarAlbum(album);
-        return album;
+        Album album1 = new Album(album.getTitol(), album.getImatge(), album.getDescripcio(), artista);
+        albumService.guardarAlbum(album1);
+        return album1;
     }
 
     @PostMapping("/{id}")
@@ -74,6 +74,7 @@ public class AlbumController extends BaseController {
                 album.setDescripcio(albumUpdate.descripcio);
 
             albumService.guardarAlbum(album);
+
             return album;
         }else
             throw new ServiceException("Aquest album no forma part del artista");
