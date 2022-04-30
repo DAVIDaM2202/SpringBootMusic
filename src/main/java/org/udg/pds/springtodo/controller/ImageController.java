@@ -75,6 +75,19 @@ public class ImageController extends BaseController {
             throw new ControllerException("Error downloading file: " + e.getMessage());
         }
     }
+    @DeleteMapping("/{filename}")
+    public void deleteImage(@PathVariable("filename") String filename){
+        MinioClient minioClient = global.getMinioClient();
+        if (minioClient == null)
+            throw new ControllerException("Minio client not configured");
+
+        try{
+            minioClient.removeObject(global.getMinioBucket(),filename);
+        }catch (Exception e) {
+            throw new ControllerException("Error deleting file: " + e.getMessage());
+        }
+
+    }
 }
 
 

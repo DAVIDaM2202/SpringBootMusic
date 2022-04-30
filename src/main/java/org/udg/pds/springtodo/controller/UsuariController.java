@@ -1,8 +1,11 @@
 package org.udg.pds.springtodo.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.udg.pds.springtodo.Global;
+import org.udg.pds.springtodo.controller.exceptions.ControllerException;
 import org.udg.pds.springtodo.controller.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Artista;
 import org.udg.pds.springtodo.entity.Usuari;
@@ -25,7 +28,8 @@ public class UsuariController extends BaseController {
     UsuariService usuariService;
     @Autowired
     ArtistaService artistaService;
-
+    @Autowired
+    Global global;
     @GetMapping
     public Collection<Usuari> getAllUsers(HttpSession session){
         return usuariService.obtenirTots();
@@ -75,6 +79,16 @@ public class UsuariController extends BaseController {
         }
         user.setDescription(ru.description);
         if(ru.image!=null){
+            MinioClient minioClient = global.getMinioClient();
+            if (minioClient == null)
+                throw new ControllerException("Minio client not configured");
+
+            try{
+                String nameImage=user.getImage().substring(user.getImage().lastIndexOf("/")+1);
+                minioClient.removeObject(global.getMinioBucket(),nameImage);
+            }catch (Exception e) {
+                throw new ControllerException("Error deleting file: " + e.getMessage());
+            }
             user.setImage(ru.image);
         }
         usuariService.updateUser(user);
