@@ -29,6 +29,8 @@ public class UsuariController extends BaseController {
     @Autowired
     ArtistaService artistaService;
     @Autowired
+    ImageController imageController;
+    @Autowired
     Global global;
     @GetMapping
     public Collection<Usuari> getAllUsers(HttpSession session){
@@ -78,17 +80,9 @@ public class UsuariController extends BaseController {
             }
         }
         user.setDescription(ru.description);
-        if(ru.image!=null){
-            MinioClient minioClient = global.getMinioClient();
-            if (minioClient == null)
-                throw new ControllerException("Minio client not configured");
 
-            try{
-                String nameImage=user.getImage().substring(user.getImage().lastIndexOf("/")+1);
-                minioClient.removeObject(global.getMinioBucket(),nameImage);
-            }catch (Exception e) {
-                throw new ControllerException("Error deleting file: " + e.getMessage());
-            }
+        if(ru.image!=null){
+            imageController.deleteImage(user.getImage().substring(user.getImage().lastIndexOf("/")+1));
             user.setImage(ru.image);
         }
         usuariService.updateUser(user);
